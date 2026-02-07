@@ -3,7 +3,7 @@
   <channel>
     <title>Giveaway Linux</title>
     <link>https://zlormann.github.io/Giveaway-Linux/</link>
-    <description>Daily free Linux software & games</description>
+   <description><![CDATA[Daily free Linux software & games]]></description>
     <language>en</language>
 
     <!-- Les items seront mis à jour via GitHub Actions -->
