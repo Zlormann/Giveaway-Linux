@@ -2,70 +2,184 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Giveaway Linux</title>
+  <title>Giveaway Linux — 1 logiciel + 1 jeu gratuits chaque jour</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- RSS auto-détectable -->
   <link rel="alternate" type="application/rss+xml" title="Giveaway Linux RSS" href="rss.xml">
+
+  <!-- SEO basique -->
+  <meta name="description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux. Liens officiels uniquement. Pas de tracking." />
+  <meta name="robots" content="index,follow" />
+
   <style>
-    body { font-family: Arial, sans-serif; background:#0f172a; color:#e5e7eb; margin:0; padding:2rem; }
-    header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
-    h1 { margin:0; }
-    nav { margin: .5rem 0 1.5rem 0; display:flex; gap:1rem; flex-wrap:wrap; }
-    .muted { opacity:.8; }
-    .card { background:#020617; border-radius:10px; padding:1.2rem; margin-bottom:1rem; border:1px solid #1e293b; }
-    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
-    .btn { display:inline-block; padding:.55rem .8rem; border-radius:10px; border:1px solid #1e293b; background:#0b1227; color:#38bdf8; text-decoration:none; }
-    .btn:hover { text-decoration:underline; }
-    .grid { display:grid; grid-template-columns:1fr; gap:12px; }
-    @media (min-width:900px){ .grid { grid-template-columns:1fr 1fr; } }
-    .mini { font-size:.92rem; }
-    .pill { display:inline-block; padding:.25rem .55rem; border:1px solid #1e293b; border-radius:999px; font-size:.85rem; opacity:.9; }
-    .star { cursor:pointer; user-select:none; font-size:1.1rem; }
-    .star.on { color:#fbbf24; }
-    footer { margin-top:2.5rem; opacity:.75; font-size:.92rem; }
-    a { color:#38bdf8; }
+    :root{
+      --bg:#0b1020;
+      --panel:#0f172a;
+      --card:#0a1226;
+      --border:#1e293b;
+      --text:#e5e7eb;
+      --muted:#a7b0c0;
+      --accent:#38bdf8;
+      --good:#22c55e;
+      --warn:#fbbf24;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; padding:0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 10% 10%, #11224a 0%, var(--bg) 55%),
+                  radial-gradient(900px 600px at 90% 20%, #0b3b4a 0%, var(--bg) 55%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px; margin:0 auto; padding:28px 18px 42px}
+
+    /* Top bar */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand img{width:56px; height:56px}
+    .brand h1{margin:0; font-size:1.55rem; letter-spacing:.2px}
+    .brand .tag{margin-top:4px; color:var(--muted); font-size:.95rem}
+
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center; justify-content:flex-end;
+    }
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:.55rem .85rem;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(15,23,42,.55);
+      color:var(--text);
+      text-decoration:none;
+      transition: transform .05s ease;
+    }
+    .btn:hover{ text-decoration:none; transform: translateY(-1px); border-color:#2f415f; }
+    .btn.primary{ background: rgba(56,189,248,.12); border-color: rgba(56,189,248,.25); color: var(--accent); }
+
+    /* Hero */
+    .hero{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(56,189,248,.10), rgba(15,23,42,.55));
+      border-radius:18px;
+      padding:18px 18px;
+      margin:14px 0 18px;
+    }
+    .hero .row{
+      display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:.35rem .7rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background: rgba(2,6,23,.6);
+      color: var(--muted);
+      font-size:.9rem;
+      white-space:nowrap;
+    }
+    .pill strong{color:var(--text)}
+    .note{
+      color: var(--muted);
+      font-size:.95rem;
+    }
+
+    /* Sections */
+    h2{margin:22px 0 10px; font-size:1.2rem}
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    @media (min-width: 920px){
+      .grid{grid-template-columns:1fr 1fr;}
+    }
+
+    /* Cards rendered by JS */
+    .card{
+      background: rgba(2,6,23,.65);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:14px 14px;
+    }
+    .card hr{border:none; border-top:1px solid var(--border); margin:12px 0;}
+    .mini{font-size:.92rem; color:var(--muted)}
+    .footer{
+      margin-top:26px;
+      border-top:1px solid var(--border);
+      padding-top:16px;
+      color:var(--muted);
+      font-size:.92rem;
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;
+    }
+    .safe{
+      display:inline-flex; align-items:center; gap:8px;
+      color: var(--muted);
+    }
+    code{background: rgba(56,189,248,.10); border:1px solid rgba(56,189,248,.18); padding:2px 6px; border-radius:8px}
   </style>
 </head>
+
 <body>
+  <div class="wrap">
 
-<header>
-  <img src="assets/logo.svg" width="64" alt="Giveaway Linux">
-  <div>
-    <h1>Giveaway Linux</h1>
-    <div class="muted">🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</div>
-  </div>
-</header>
+    <div class="topbar">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="Giveaway Linux">
+        <div>
+          <h1>Giveaway Linux</h1>
+          <div class="tag">Chaque jour : 1 logiciel + 1 jeu gratuits — liens officiels uniquement</div>
+        </div>
+      </div>
 
-<nav>
-  <a class="btn" href="index.html">Accueil</a>
-  <a class="btn" href="archive.html">Archives</a>
-  <a class="btn" href="favorites.html">⭐ Favoris</a>
-  <a class="btn" href="about.html">À propos</a>
-  <a class="btn" href="submit.html">Proposer</a>
-  <a class="btn" href="rss.xml">RSS</a>
-</nav>
-
-<div class="card">
-  <div class="row">
-    <div>
-      <div class="pill">📅 Sélection du jour : <span id="pick-date">—</span></div>
+      <div class="nav">
+        <a class="btn primary" href="index.html">🏠 Accueil</a>
+        <a class="btn" href="archive.html">🗓️ Archives</a>
+        <a class="btn" href="favorites.html">⭐ Favoris</a>
+        <a class="btn" href="submit.html">➕ Proposer</a>
+        <a class="btn" href="about.html">ℹ️ À propos</a>
+        <a class="btn" href="rss.xml">📡 RSS</a>
+      </div>
     </div>
-    <div class="mini muted">Tu peux mettre ⭐ en favoris pour y revenir.</div>
+
+    <div class="hero">
+      <div class="row">
+        <div class="pill">📅 Sélection du jour : <strong><span id="pick-date">—</span></strong></div>
+        <div class="note">⭐ Ajoute aux favoris pour retrouver tes trouvailles plus tard (stocké localement, aucun compte).</div>
+      </div>
+      <div class="mini" style="margin-top:10px">
+        ✅ Pas de tracking • ✅ Pas de scripts externes • ✅ Liens officiels • ✅ Données publiques : <code>/data</code>
+      </div>
+    </div>
+
+    <!-- Aujourd'hui -->
+    <h2>🎁 Aujourd’hui</h2>
+    <div id="today" class="grid">
+      <div class="card">Chargement…</div>
+    </div>
+
+    <!-- 7 derniers jours -->
+    <h2>🗓️ Les 7 derniers jours</h2>
+    <div id="last7" class="grid">
+      <div class="card">Chargement…</div>
+    </div>
+
+    <div class="footer">
+      <div class="safe">🛡️ Projet communautaire • Aucun tracking • © 2026 Giveaway Linux</div>
+      <div>Besoin d’ajouter l’historique ? Crée <code>data/catalog.json</code> (30 jours max).</div>
+    </div>
+
   </div>
-</div>
 
-<div id="today" class="grid">
-  <div class="card">Chargement…</div>
-</div>
-
-<h2 style="margin-top:1.6rem">🗓️ Les 7 derniers jours</h2>
-<div id="last7" class="grid">
-  <div class="card">Chargement…</div>
-</div>
-
-<footer>
-  ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux
-</footer>
-
-<script src="js/app.js" defer></script>
+  <!-- Ton JS (A+B) : jour + 7 derniers + favoris -->
+  <script src="js/app.js" defer></script>
 </body>
 </html>
