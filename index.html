@@ -1,141 +1,59 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <link rel="alternate" type="application/rss+xml"
-      title="Giveaway Linux RSS"
-      href="rss.xml">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Giveaway Linux — Sélection du jour</title>
-
-  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:980px;margin:40px auto;padding:0 16px;line-height:1.4}
-    header{display:flex;gap:14px;align-items:center;margin-bottom:18px}
-    header img{width:56px;height:56px}
-    nav a{margin-right:12px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
-    .card{border:1px solid #ddd;border-radius:12px;padding:14px}
-    .muted{color:#666}
-    .btn{display:inline-block;padding:10px 12px;border-radius:10px;border:1px solid #ccc;text-decoration:none}
-    .ok{color:#0a7a2f}
-    .warn{color:#b45309}
-    .err{color:#b91c1c;white-space:pre-wrap}
-    footer{margin-top:28px;color:#666;font-size:14px}
-    code{background:#f6f6f6;padding:2px 6px;border-radius:6px}
-    @media (max-width:800px){.grid{grid-template-columns:1fr}}
-  </style>
-</head>
-<body>
-  <header>
-    <img src="./assets/logo.svg" alt="Logo Giveaway Linux" onerror="this.style.display='none'">
-    <div>
-      <h1 style="margin:0">Giveaway Linux</h1>
-      <div class="muted">1 logiciel + 1 jeu gratuits • sélection quotidienne</div>
-    </div>
-  </header>
-
-  <nav>
-    <a href="./index.html">Accueil</a>
-    <a href="./archive.html">Archives</a>
-    <a href="./about.html">À propos</a>
-    <a href="./submit.html">Proposer</a>
-    <a href="./rss.xml">RSS</a>
-  </nav>
-
-  <div class="card" id="status" style="margin-top:16px">
-    <div class="warn">Chargement des données…</div>
-    <div class="muted">Si ça reste bloqué, c’est un souci de chemin. Les fichiers attendus sont : <code>./data/picks.json</code> <code>./data/software.json</code> <code>./data/games.json</code></div>
-  </div>
-
-  <section class="grid">
-    <div class="card">
-      <h2 style="margin-top:0">🧩 Logiciel</h2>
-      <div id="softBox" class="muted">—</div>
-    </div>
-    <div class="card">
-      <h2 style="margin-top:0">🎮 Jeu</h2>
-      <div id="gameBox" class="muted">—</div>
-    </div>
-  </section>
-
-  <footer>
-    ✅ Liens officiels uniquement • ✅ Aucun tracking • ✅ Projet communautaire<br>
-    <span class="muted">Données publiques : <code>/data/*.json</code></span>
-  </footer>
-
 <script>
 (async () => {
-  const $status = document.getElementById('status');
-  const $soft = document.getElementById('softBox');
-  const $game = document.getElementById('gameBox');
-
-  function esc(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-  function link(url, label){
-    if(!url) return '';
-    const safe = String(url);
-    return `<div style="margin-top:10px"><a class="btn" href="${esc(safe)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a></div>`;
-  }
-
-  async function getJSON(path){
-    const r = await fetch(path, { cache: "no-store" });
-    if(!r.ok) throw new Error(`HTTP ${r.status} sur ${path}`);
-    return r.json();
-  }
-
   try {
-    // Chemins sûrs pour GitHub Pages
-    const picks = await getJSON('./data/picks.json');
-    const software = await getJSON('./data/software.json');
-    const games = await getJSON('./data/games.json');
+    const picksRes = await fetch("data/picks.json", { cache: "no-store" });
+    const picksJson = await picksRes.json();
+    const pick = Array.isArray(picksJson) ? picksJson[0] : picksJson;
 
-    // On prend la dernière sélection si c’est une liste, sinon l’objet direct
-    const pick = Array.isArray(picks) ? picks[picks.length - 1] : (picks.today || picks);
+    // Si picks.json contient déjà software/game complets, on les prend
+    let software = pick.software;
+    let game = pick.game;
 
-    const softId = pick.software_id || pick.software || pick.softwareId;
-    const gameId = pick.game_id || pick.game || pick.gameId;
+    // Sinon on charge les listes et on retrouve via ID
+    if (!software || !game) {
+      const [softRes, gameRes] = await Promise.all([
+        fetch("data/software.json", { cache: "no-store" }),
+        fetch("data/games.json", { cache: "no-store" })
+      ]);
+      const softwareList = await softRes.json();
+      const gamesList = await gameRes.json();
 
-    const soft = Array.isArray(software) ? software.find(x => x.id === softId) : software[softId];
-    const game = Array.isArray(games) ? games.find(x => x.id === gameId) : games[gameId];
+      const softwareId = pick.software_id;
+      const gameId = pick.game_id;
 
-    $status.innerHTML = `<div class="ok">✅ Données chargées.</div>
-      <div class="muted">Sélection : <code>${esc(pick.date || pick.day || 'aujourd’hui')}</code></div>`;
-
-    if(soft){
-      $soft.innerHTML = `
-        <h3 style="margin:0 0 6px 0">${esc(soft.name || soft.title)}</h3>
-        <div class="muted">${esc(soft.description || '')}</div>
-        ${link(soft.url || soft.link, 'Télécharger (lien officiel)')}
-      `;
-    } else {
-      $soft.textContent = "Aucun logiciel trouvé (ID manquant ou non présent dans software.json).";
+      software = softwareList.find(s => (s.id || "").toLowerCase() === String(softwareId || "").toLowerCase());
+      game = gamesList.find(g => (g.id || "").toLowerCase() === String(gameId || "").toLowerCase());
     }
 
-    if(game){
-      $game.innerHTML = `
-        <h3 style="margin:0 0 6px 0">${esc(game.name || game.title)}</h3>
-        <div class="muted">${esc(game.description || '')}</div>
-        ${link(game.url || game.link, 'Télécharger (lien officiel)')}
-      `;
-    } else {
-      $game.textContent = "Aucun jeu trouvé (ID manquant ou non présent dans games.json).";
-    }
+    const c = document.getElementById("content");
 
+    const softName = software?.name || "—";
+    const softDesc = software?.description || software?.category || "Aucun logiciel trouvé.";
+    const softUrl  = software?.download_url || software?.home_url || software?.url || "#";
+
+    const gameName = game?.name || "—";
+    const gameDesc = game?.description || game?.genre || "Aucun jeu trouvé.";
+    const gameUrl  = game?.download_url || game?.home_url || game?.url || "#";
+
+    c.innerHTML = `
+      <div class="card">
+        <h2>🛠️ Logiciel du jour</h2>
+        <strong>${softName}</strong>
+        <p>${softDesc}</p>
+        <a href="${softUrl}" target="_blank" rel="noopener noreferrer">⬇ Télécharger</a>
+      </div>
+
+      <div class="card">
+        <h2>🎮 Jeu du jour</h2>
+        <strong>${gameName}</strong>
+        <p>${gameDesc}</p>
+        <a href="${gameUrl}" target="_blank" rel="noopener noreferrer">⬇ Télécharger</a>
+      </div>
+    `;
   } catch (e) {
-    $status.innerHTML = `<div class="err">❌ Erreur : ${esc(e.message)}</div>
-    <div class="muted" style="margin-top:8px">
-      Vérifie que ces fichiers existent exactement (mêmes noms) :
-      <ul>
-        <li><code>/data/picks.json</code></li>
-        <li><code>/data/software.json</code></li>
-        <li><code>/data/games.json</code></li>
-      </ul>
-      Et recharge avec <b>Ctrl+F5</b>.
-    </div>`;
+    document.getElementById("content").innerText =
+      "Impossible de charger la sélection.";
     console.error(e);
-    <a href="rss.xml">RSS</a>
   }
 })();
 </script>
-</body>
-</html>
