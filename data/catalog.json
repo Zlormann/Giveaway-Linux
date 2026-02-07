@@ -1,9 +1,8 @@
 [
   {
     "date": "2026-02-07",
-    "software": "GIMP",
-    "software_url": "https://www.gimp.org",
-    "game": "SuperTuxKart",
-    "game_url": "https://supertuxkart.net"
+    "software_id": "gimp",
+    "game_id": "supertuxkart",
+    "generated_utc": "2026-02-07T12:30:00+00:00"
   }
 ]
