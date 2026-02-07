@@ -1,14 +1,8 @@
 [
   {
-    "id": "0ad",
-    "name": "0 A.D.",
-    "url": "https://play0ad.com",
-    "genre": "Strategy"
-  },
-  {
     "id": "supertuxkart",
     "name": "SuperTuxKart",
-    "url": "https://supertuxkart.net",
-    "genre": "Racing"
+    "genre": "Racing",
+    "url": "https://supertuxkart.net"
   }
 ]
