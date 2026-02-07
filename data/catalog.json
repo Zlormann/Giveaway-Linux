@@ -40,3 +40,17 @@
     }
   ]
 }
+[
+  {
+    "date": "2026-02-07",
+    "software_id": "gimp",
+    "game_id": "supertuxkart",
+    "generated_utc": "2026-02-07T12:30:00+00:00"
+  },
+  {
+    "date": "2026-02-06",
+    "software_id": "kdenlive",
+    "game_id": "0ad",
+    "generated_utc": "2026-02-06T12:30:00+00:00"
+  }
+]
