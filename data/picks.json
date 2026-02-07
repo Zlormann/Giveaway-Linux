@@ -1,0 +1,22 @@
+{
+  "edition": 20260207,
+  "date": "2026-02-07",
+  "software": {
+    "name": "GIMP",
+    "description": "Retouche d’images libre et puissante.",
+    "license": "Open Source",
+    "tags": ["Image", "Graphisme", "Linux"],
+    "home_url": "https://www.gimp.org/",
+    "download_url": "https://www.gimp.org/downloads/"
+  },
+  "game": {
+    "name": "SuperTuxKart",
+    "description": "Jeu de course fun et open source.",
+    "platform": "Linux",
+    "tags": ["Course", "Open Source", "Multi"],
+    "home_url": "https://supertuxkart.net/",
+    "download_url": "https://supertuxkart.net/Download"
+  },
+  "generated_utc": "2026-02-07T12:30:00+00:00",
+  "site": "https://zlormann.github.io/Giveaway-Linux/"
+}

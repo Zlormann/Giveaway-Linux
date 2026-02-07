@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Giveaway Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 2rem;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    h1 { margin: 0; }
+    .card {
+      background: #020617;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #1e293b;
+    }
+    a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="assets/logo.svg" width="64" alt="Giveaway Linux">
+  <h1>Giveaway Linux</h1>
+</header>
+
+<p>🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</p>
+
+<div id="content">Chargement de la sélection du jour…</div>
+
+<footer>
+  ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux
+</footer>
+
+<script>
+fetch("data/picks.json")
+  .then(r => r.json())
+  .then(data => {
+    const c = document.getElementById("content");
+    c.innerHTML = `
+      <div class="card">
+        <h2>🛠️ Logiciel du jour</h2>
+        <strong>${data.software.name}</strong>
+        <p>${data.software.description}</p>
+        <a href="${data.software.download_url}" target="_blank">⬇ Télécharger</a>
+      </div>
+
+      <div class="card">
+        <h2>🎮 Jeu du jour</h2>
+        <strong>${data.game.name}</strong>
+        <p>${data.game.description}</p>
+        <a href="${data.game.download_url}" target="_blank">⬇ Télécharger</a>
+      </div>
+    `;
+  })
+  .catch(() => {
+    document.getElementById("content").innerText =
+      "Impossible de charger la sélection.";
+  });
+</script>
+
+</body>
+</html>
