@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Giveaway Linux</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,15 +17,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    h1 { margin: 0; }
-    nav {
-      margin: 0.5rem 0 1.5rem 0;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0.95;
+      margin-bottom: 2rem;
     }
     .card {
       background: #020617;
@@ -38,17 +31,6 @@
       text-decoration: none;
     }
     a:hover { text-decoration: underline; }
-    .muted {
-      opacity: 0.8;
-      font-size: 0.95rem;
-    }
-    #status {
-      margin: 1rem 0;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-    }
     footer {
       margin-top: 3rem;
       font-size: 0.9rem;
@@ -56,32 +38,32 @@
     }
   </style>
 </head>
+
 <body>
 
 <header>
   <img src="assets/logo.svg" width="64" alt="Giveaway Linux">
-  <div>
-    <h1>Giveaway Linux</h1>
-    <div class="muted">🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</div>
-  </div>
+  <h1>Giveaway Linux</h1>
 </header>
 
+<p>🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</p>
+
 <nav>
-  <a href="index.html">Accueil</a>
-  <a href="archive.html">Archives</a>
-  <a href="about.html">À propos</a>
-  <a href="submit.html">Proposer</a>
+  <a href="index.html">Accueil</a> ·
+  <a href="archive.html">Archives</a> ·
+  <a href="about.html">À propos</a> ·
+  <a href="submit.html">Proposer</a> ·
   <a href="rss.xml">RSS</a>
 </nav>
 
-<div id="status">Chargement de la sélection du jour…</div>
+<br>
 
-<div id="content"></div>
+<div id="content">Chargement de la sélection du jour…</div>
 
 <footer>
   ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux
 </footer>
 
-<script src="js/app.js" defer></script>
+<script src="js/app.js"></script>
 </body>
 </html>
