@@ -1,11 +1,22 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Giveaway Linux</title>
     <link>https://zlormann.github.io/Giveaway-Linux/</link>
-   <description><![CDATA[Daily free Linux software & games]]></description>
-    <language>en</language>
+    <atom:link href="https://zlormann.github.io/Giveaway-Linux/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Daily free Linux software &amp; games</description>
+    <language>fr</language>
 
-    <!-- Les items seront mis à jour via GitHub Actions -->
+    <item>
+      <title>GIMP + SuperTuxKart (2026-02-07)</title>
+      <link>https://zlormann.github.io/Giveaway-Linux/</link>
+      <guid isPermaLink="false">giveaway-linux-2026-02-07</guid>
+      <pubDate>Fri, 07 Feb 2026 12:30:00 GMT</pubDate>
+      <description><![CDATA[
+        Logiciel: <a href="https://www.gimp.org">GIMP</a><br/>
+        Jeu: <a href="https://supertuxkart.net/">SuperTuxKart</a>
+      ]]></description>
+    </item>
+
   </channel>
 </rss>
