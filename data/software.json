@@ -1,10 +1,12 @@
 [
   {
+    "id": "gimp",
     "name": "GIMP",
     "url": "https://www.gimp.org",
     "category": "Graphics"
   },
   {
+    "id": "kdenlive",
     "name": "Kdenlive",
     "url": "https://kdenlive.org",
     "category": "Video"
