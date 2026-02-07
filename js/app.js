@@ -2,6 +2,9 @@
   const contentEl = document.getElementById("content");
   if (!contentEl) return;
 
+  // Optionnel : si tu ajoutes <span id="pick-date"></span> dans index.html
+  const dateEl = document.getElementById("pick-date");
+
   // Base URL = dossier de la page courante (ex: https://.../Giveaway-Linux/)
   const base = new URL("./", window.location.href);
 
@@ -22,25 +25,32 @@
   }
 
   function pickUrl(obj) {
-    // on prend url (ton format actuel), sinon home_url/download_url si tu ajoutes plus tard
-    return obj?.url || obj?.home_url || obj?.download_url || "#";
+    // compatible avec ton format actuel (url)
+    // + support futur si tu ajoutes home_url / download_url
+    return obj?.download_url || obj?.home_url || obj?.url || "#";
   }
 
   (async () => {
     try {
-      // IMPORTANT : ici on charge TES fichiers existants
       const [pick, softwareList, gamesList] = await Promise.all([
         loadJSON("data/picks.json"),
         loadJSON("data/software.json"),
         loadJSON("data/games.json"),
       ]);
 
-      const software = Array.isArray(softwareList)
-        ? softwareList.find(s => s.id === pick.software_id)
+      // Affiche la date si l'élément existe
+      if (dateEl) dateEl.textContent = pick?.date || "—";
+
+      // Sécurités
+      const softId = pick?.software_id;
+      const gameId = pick?.game_id;
+
+      const software = Array.isArray(softwareList) && softId
+        ? softwareList.find(s => s.id === softId)
         : null;
 
-      const game = Array.isArray(gamesList)
-        ? gamesList.find(g => g.id === pick.game_id)
+      const game = Array.isArray(gamesList) && gameId
+        ? gamesList.find(g => g.id === gameId)
         : null;
 
       const softName = software?.name || "Aucun logiciel trouvé.";
@@ -56,19 +66,20 @@
           <h2>🛠️ Logiciel du jour</h2>
           <strong>${esc(softName)}</strong>
           <p>Catégorie : ${esc(softMeta)}</p>
-          <a href="${esc(softUrl)}" target="_blank" rel="noopener">⬇ Télécharger (lien officiel)</a>
+          <a href="${esc(softUrl)}" target="_blank" rel="noopener noreferrer">⬇ Télécharger (lien officiel)</a>
         </div>
 
         <div class="card">
           <h2>🎮 Jeu du jour</h2>
           <strong>${esc(gameName)}</strong>
           <p>Genre : ${esc(gameMeta)}</p>
-          <a href="${esc(gameUrl)}" target="_blank" rel="noopener">⬇ Télécharger (lien officiel)</a>
+          <a href="${esc(gameUrl)}" target="_blank" rel="noopener noreferrer">⬇ Télécharger (lien officiel)</a>
         </div>
       `;
     } catch (err) {
       console.error(err);
-      contentEl.textContent = `❌ Erreur de chargement : ${err.message}`;
+      contentEl.textContent = `❌ Erreur de chargement : ${err?.message || err}`;
+      if (dateEl) dateEl.textContent = "—";
     }
   })();
 })();
