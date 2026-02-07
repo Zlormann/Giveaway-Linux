@@ -2,3 +2,9 @@
   "software_id": "gimp",
   "game_id": "supertuxkart"
 }
+data_dir = Path("data")  # adapte si ton script est dans un autre dossier
+picks_path = data_dir / "picks.json"
+pick = json.loads(picks_path.read_text(encoding="utf-8"))
+
+update_catalog(data_dir, pick, keep_days=30)
+print("✅ catalog.json mis à jour")
