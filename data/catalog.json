@@ -1,56 +1,9 @@
-{
-  "software": [
-    {
-      "id": "shotcut",
-      "name": "Shotcut",
-      "description": "Éditeur vidéo libre et gratuit.",
-      "license": "Open Source",
-      "tags": ["Montage", "Vidéo", "Linux"],
-      "home_url": "https://shotcut.org/",
-      "download_url": "https://shotcut.org/download/"
-    },
-    {
-      "id": "gimp",
-      "name": "GIMP",
-      "description": "Retouche d’images libre et puissante.",
-      "license": "Open Source",
-      "tags": ["Image", "Graphisme", "Linux"],
-      "home_url": "https://www.gimp.org/",
-      "download_url": "https://www.gimp.org/downloads/"
-    }
-  ],
-  "games": [
-    {
-      "id": "supertuxkart",
-      "name": "SuperTuxKart",
-      "description": "Jeu de course fun et open source.",
-      "platform": "Linux",
-      "tags": ["Course", "Open Source", "Multi"],
-      "home_url": "https://supertuxkart.net/",
-      "download_url": "https://supertuxkart.net/Download"
-    },
-    {
-      "id": "mindustry",
-      "name": "Mindustry",
-      "description": "Stratégie / gestion avec défense de base (version gratuite dispo).",
-      "platform": "Linux",
-      "tags": ["Stratégie", "Indé", "Coop"],
-      "home_url": "https://mindustrygame.github.io/",
-      "download_url": "https://github.com/Anuken/Mindustry/releases"
-    }
-  ]
-}
 [
   {
     "date": "2026-02-07",
-    "software_id": "gimp",
-    "game_id": "supertuxkart",
-    "generated_utc": "2026-02-07T12:30:00+00:00"
-  },
-  {
-    "date": "2026-02-06",
-    "software_id": "kdenlive",
-    "game_id": "0ad",
-    "generated_utc": "2026-02-06T12:30:00+00:00"
+    "software": "GIMP",
+    "software_url": "https://www.gimp.org",
+    "game": "SuperTuxKart",
+    "game_url": "https://supertuxkart.net/"
   }
 ]
