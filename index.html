@@ -1,67 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Giveaway Linux</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="alternate" type="application/rss+xml" title="Giveaway Linux RSS" href="rss.xml">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 2rem;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .card {
-      background: #020617;
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      border: 1px solid #1e293b;
-    }
-    a {
-      color: #38bdf8;
-      text-decoration: none;
-    }
-    a:hover { text-decoration: underline; }
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
+    body { font-family: Arial, sans-serif; background:#0f172a; color:#e5e7eb; margin:0; padding:2rem; }
+    header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
+    h1 { margin:0; }
+    nav { margin: .5rem 0 1.5rem 0; display:flex; gap:1rem; flex-wrap:wrap; }
+    .muted { opacity:.8; }
+    .card { background:#020617; border-radius:10px; padding:1.2rem; margin-bottom:1rem; border:1px solid #1e293b; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .btn { display:inline-block; padding:.55rem .8rem; border-radius:10px; border:1px solid #1e293b; background:#0b1227; color:#38bdf8; text-decoration:none; }
+    .btn:hover { text-decoration:underline; }
+    .grid { display:grid; grid-template-columns:1fr; gap:12px; }
+    @media (min-width:900px){ .grid { grid-template-columns:1fr 1fr; } }
+    .mini { font-size:.92rem; }
+    .pill { display:inline-block; padding:.25rem .55rem; border:1px solid #1e293b; border-radius:999px; font-size:.85rem; opacity:.9; }
+    .star { cursor:pointer; user-select:none; font-size:1.1rem; }
+    .star.on { color:#fbbf24; }
+    footer { margin-top:2.5rem; opacity:.75; font-size:.92rem; }
+    a { color:#38bdf8; }
   </style>
 </head>
-
 <body>
 
 <header>
   <img src="assets/logo.svg" width="64" alt="Giveaway Linux">
-  <h1>Giveaway Linux</h1>
+  <div>
+    <h1>Giveaway Linux</h1>
+    <div class="muted">🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</div>
+  </div>
 </header>
 
-<p>🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</p>
-
 <nav>
-  <a href="index.html">Accueil</a> ·
-  <a href="archive.html">Archives</a> ·
-  <a href="about.html">À propos</a> ·
-  <a href="submit.html">Proposer</a> ·
-  <a href="rss.xml">RSS</a>
+  <a class="btn" href="index.html">Accueil</a>
+  <a class="btn" href="archive.html">Archives</a>
+  <a class="btn" href="favorites.html">⭐ Favoris</a>
+  <a class="btn" href="about.html">À propos</a>
+  <a class="btn" href="submit.html">Proposer</a>
+  <a class="btn" href="rss.xml">RSS</a>
 </nav>
-<p>🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</p>
-<p>📅 Sélection : <span id="pick-date">—</span></p>
 
-<div id="content">Chargement de la sélection du jour…</div>
+<div class="card">
+  <div class="row">
+    <div>
+      <div class="pill">📅 Sélection du jour : <span id="pick-date">—</span></div>
+    </div>
+    <div class="mini muted">Tu peux mettre ⭐ en favoris pour y revenir.</div>
+  </div>
+</div>
+
+<div id="today" class="grid">
+  <div class="card">Chargement…</div>
+</div>
+
+<h2 style="margin-top:1.6rem">🗓️ Les 7 derniers jours</h2>
+<div id="last7" class="grid">
+  <div class="card">Chargement…</div>
+</div>
 
 <footer>
-  ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux • <a href="rss.xml">RSS</a>
+  ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux
 </footer>
 
 <script src="js/app.js" defer></script>
