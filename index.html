@@ -1,84 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Giveaway Linux</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Giveaway Linux — Sélection du jour</title>
+
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 2rem;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    h1 { margin: 0; }
-    .card {
-      background: #020617;
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      border: 1px solid #1e293b;
-    }
-    a {
-      color: #38bdf8;
-      text-decoration: none;
-    }
-    a:hover { text-decoration: underline; }
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
+    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;max-width:980px;margin:40px auto;padding:0 16px;line-height:1.4}
+    header{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+    header img{width:56px;height:56px}
+    nav a{margin-right:12px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+    .card{border:1px solid #ddd;border-radius:12px;padding:14px}
+    .muted{color:#666}
+    .btn{display:inline-block;padding:10px 12px;border-radius:10px;border:1px solid #ccc;text-decoration:none}
+    .ok{color:#0a7a2f}
+    .warn{color:#b45309}
+    .err{color:#b91c1c;white-space:pre-wrap}
+    footer{margin-top:28px;color:#666;font-size:14px}
+    code{background:#f6f6f6;padding:2px 6px;border-radius:6px}
+    @media (max-width:800px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
+  <header>
+    <img src="./assets/logo.svg" alt="Logo Giveaway Linux" onerror="this.style.display='none'">
+    <div>
+      <h1 style="margin:0">Giveaway Linux</h1>
+      <div class="muted">1 logiciel + 1 jeu gratuits • sélection quotidienne</div>
+    </div>
+  </header>
 
-<header>
-  <img src="assets/logo.svg" width="64" alt="Giveaway Linux">
-  <h1>Giveaway Linux</h1>
-</header>
+  <nav>
+    <a href="./index.html">Accueil</a>
+    <a href="./archive.html">Archives</a>
+    <a href="./about.html">À propos</a>
+    <a href="./submit.html">Proposer</a>
+    <a href="./rss.xml">RSS</a>
+  </nav>
 
-<p>🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</p>
+  <div class="card" id="status" style="margin-top:16px">
+    <div class="warn">Chargement des données…</div>
+    <div class="muted">Si ça reste bloqué, c’est un souci de chemin. Les fichiers attendus sont : <code>./data/picks.json</code> <code>./data/software.json</code> <code>./data/games.json</code></div>
+  </div>
 
-<div id="content">Chargement de la sélection du jour…</div>
+  <section class="grid">
+    <div class="card">
+      <h2 style="margin-top:0">🧩 Logiciel</h2>
+      <div id="softBox" class="muted">—</div>
+    </div>
+    <div class="card">
+      <h2 style="margin-top:0">🎮 Jeu</h2>
+      <div id="gameBox" class="muted">—</div>
+    </div>
+  </section>
 
-<footer>
-  ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux
-</footer>
+  <footer>
+    ✅ Liens officiels uniquement • ✅ Aucun tracking • ✅ Projet communautaire<br>
+    <span class="muted">Données publiques : <code>/data/*.json</code></span>
+  </footer>
 
 <script>
-fetch("data/picks.json")
-  .then(r => r.json())
-  .then(data => {
-    const c = document.getElementById("content");
-    c.innerHTML = `
-      <div class="card">
-        <h2>🛠️ Logiciel du jour</h2>
-        <strong>${data.software.name}</strong>
-        <p>${data.software.description}</p>
-        <a href="${data.software.download_url}" target="_blank">⬇ Télécharger</a>
-      </div>
+(async () => {
+  const $status = document.getElementById('status');
+  const $soft = document.getElementById('softBox');
+  const $game = document.getElementById('gameBox');
 
-      <div class="card">
-        <h2>🎮 Jeu du jour</h2>
-        <strong>${data.game.name}</strong>
-        <p>${data.game.description}</p>
-        <a href="${data.game.download_url}" target="_blank">⬇ Télécharger</a>
-      </div>
-    `;
-  })
-  .catch(() => {
-    document.getElementById("content").innerText =
-      "Impossible de charger la sélection.";
-  });
+  function esc(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function link(url, label){
+    if(!url) return '';
+    const safe = String(url);
+    return `<div style="margin-top:10px"><a class="btn" href="${esc(safe)}" target="_blank" rel="noopener noreferrer">${esc(label)}</a></div>`;
+  }
+
+  async function getJSON(path){
+    const r = await fetch(path, { cache: "no-store" });
+    if(!r.ok) throw new Error(`HTTP ${r.status} sur ${path}`);
+    return r.json();
+  }
+
+  try {
+    // Chemins sûrs pour GitHub Pages
+    const picks = await getJSON('./data/picks.json');
+    const software = await getJSON('./data/software.json');
+    const games = await getJSON('./data/games.json');
+
+    // On prend la dernière sélection si c’est une liste, sinon l’objet direct
+    const pick = Array.isArray(picks) ? picks[picks.length - 1] : (picks.today || picks);
+
+    const softId = pick.software_id || pick.software || pick.softwareId;
+    const gameId = pick.game_id || pick.game || pick.gameId;
+
+    const soft = Array.isArray(software) ? software.find(x => x.id === softId) : software[softId];
+    const game = Array.isArray(games) ? games.find(x => x.id === gameId) : games[gameId];
+
+    $status.innerHTML = `<div class="ok">✅ Données chargées.</div>
+      <div class="muted">Sélection : <code>${esc(pick.date || pick.day || 'aujourd’hui')}</code></div>`;
+
+    if(soft){
+      $soft.innerHTML = `
+        <h3 style="margin:0 0 6px 0">${esc(soft.name || soft.title)}</h3>
+        <div class="muted">${esc(soft.description || '')}</div>
+        ${link(soft.url || soft.link, 'Télécharger (lien officiel)')}
+      `;
+    } else {
+      $soft.textContent = "Aucun logiciel trouvé (ID manquant ou non présent dans software.json).";
+    }
+
+    if(game){
+      $game.innerHTML = `
+        <h3 style="margin:0 0 6px 0">${esc(game.name || game.title)}</h3>
+        <div class="muted">${esc(game.description || '')}</div>
+        ${link(game.url || game.link, 'Télécharger (lien officiel)')}
+      `;
+    } else {
+      $game.textContent = "Aucun jeu trouvé (ID manquant ou non présent dans games.json).";
+    }
+
+  } catch (e) {
+    $status.innerHTML = `<div class="err">❌ Erreur : ${esc(e.message)}</div>
+    <div class="muted" style="margin-top:8px">
+      Vérifie que ces fichiers existent exactement (mêmes noms) :
+      <ul>
+        <li><code>/data/picks.json</code></li>
+        <li><code>/data/software.json</code></li>
+        <li><code>/data/games.json</code></li>
+      </ul>
+      Et recharge avec <b>Ctrl+F5</b>.
+    </div>`;
+    console.error(e);
+  }
+})();
 </script>
-
 </body>
 </html>
