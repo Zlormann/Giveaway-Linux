@@ -1,59 +1,65 @@
-<script>
-(async () => {
-  try {
-    const picksRes = await fetch("data/picks.json", { cache: "no-store" });
-    const picksJson = await picksRes.json();
-    const pick = Array.isArray(picksJson) ? picksJson[0] : picksJson;
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Giveaway Linux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    // Si picks.json contient déjà software/game complets, on les prend
-    let software = pick.software;
-    let game = pick.game;
-
-    // Sinon on charge les listes et on retrouve via ID
-    if (!software || !game) {
-      const [softRes, gameRes] = await Promise.all([
-        fetch("data/software.json", { cache: "no-store" }),
-        fetch("data/games.json", { cache: "no-store" })
-      ]);
-      const softwareList = await softRes.json();
-      const gamesList = await gameRes.json();
-
-      const softwareId = pick.software_id;
-      const gameId = pick.game_id;
-
-      software = softwareList.find(s => (s.id || "").toLowerCase() === String(softwareId || "").toLowerCase());
-      game = gamesList.find(g => (g.id || "").toLowerCase() === String(gameId || "").toLowerCase());
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 2rem;
     }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    h1 { margin: 0; }
+    .card {
+      background: #020617;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #1e293b;
+    }
+    a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+    .muted {
+      opacity: 0.75;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
 
-    const c = document.getElementById("content");
+<header>
+  <img src="assets/logo.svg" width="64" alt="Giveaway Linux">
+  <div>
+    <h1>Giveaway Linux</h1>
+    <div class="muted">🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</div>
+  </div>
+</header>
 
-    const softName = software?.name || "—";
-    const softDesc = software?.description || software?.category || "Aucun logiciel trouvé.";
-    const softUrl  = software?.download_url || software?.home_url || software?.url || "#";
+<div id="content">Chargement de la sélection du jour…</div>
 
-    const gameName = game?.name || "—";
-    const gameDesc = game?.description || game?.genre || "Aucun jeu trouvé.";
-    const gameUrl  = game?.download_url || game?.home_url || game?.url || "#";
+<footer>
+  ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux •
+  <a href="rss.xml">RSS</a>
+</footer>
 
-    c.innerHTML = `
-      <div class="card">
-        <h2>🛠️ Logiciel du jour</h2>
-        <strong>${softName}</strong>
-        <p>${softDesc}</p>
-        <a href="${softUrl}" target="_blank" rel="noopener noreferrer">⬇ Télécharger</a>
-      </div>
-
-      <div class="card">
-        <h2>🎮 Jeu du jour</h2>
-        <strong>${gameName}</strong>
-        <p>${gameDesc}</p>
-        <a href="${gameUrl}" target="_blank" rel="noopener noreferrer">⬇ Télécharger</a>
-      </div>
-    `;
-  } catch (e) {
-    document.getElementById("content").innerText =
-      "Impossible de charger la sélection.";
-    console.error(e);
-  }
-})();
-</script>
+<script src="js/app.js"></script>
+</body>
+</html>
