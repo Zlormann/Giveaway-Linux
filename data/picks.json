@@ -5,3 +5,6 @@
   "generated_utc": "2026-02-07T12:30:00+00:00",
   "site": "https://zlormann.github.io/Giveaway-Linux/"
 }
+- name: Update catalog.json (keep 30 days)
+  run: python scripts/update_catalog.py
+  git add data/picks.json data/catalog.json
