@@ -319,3 +319,9 @@ async function copyToClipboard(text) {
     setError(err?.message || String(err));
   }
 })();
+const u = new URL(window.location.href);
+u.searchParams.set("s", software.id);
+u.searchParams.set("g", game.id);
+// optionnel si tu veux figer une date
+// u.searchParams.set("d", new Date().toISOString().slice(0,10));
+window.history.replaceState({}, "", u.toString());
