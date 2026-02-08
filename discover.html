@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Giveaway Linux — Découvrir au hasard</title>
+  <meta name="description" content="Découvrir au hasard un logiciel et/ou un jeu Linux gratuits (liens officiels uniquement)." />
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux">
+        <div>
+          <h1>Giveaway Linux</h1>
+          <p>Découvrir • au hasard • liens officiels</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="tab" href="./index.html">Accueil</a>
+        <a class="tab" href="./archive.html">Archives</a>
+        <a class="tab active" href="./discover.html">Découvrir</a>
+        <a class="tab" href="./favorites.html">Favoris</a>
+        <a class="tab" href="./submit.html">Proposer</a>
+        <a class="tab" href="./about.html">À propos</a>
+        <a class="tab" href="./rss.xml">RSS</a>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="head">
+        <h2>🎲 Découvrir au hasard</h2>
+        <div class="muted">Catalogue public • sélection locale • sans tracking</div>
+      </div>
+
+      <div class="body">
+        <div id="errorBox"></div>
+
+        <div class="grid2" style="gap:12px;">
+          <div>
+            <div class="muted">Mode</div>
+            <select id="mode" class="input">
+              <option value="both">Logiciel + Jeu</option>
+              <option value="software">Logiciel seulement</option>
+              <option value="game">Jeu seulement</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="muted">Éviter les répétitions</div>
+            <select id="avoid" class="input">
+              <option value="on" selected>Oui (évite les derniers tirages)</option>
+              <option value="off">Non (complètement aléatoire)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn primary" id="roll">🎲 Relancer</button>
+          <button class="btn" id="share">🔗 Copier un lien</button>
+          <button class="btn" id="reset">🧼 Réinitialiser</button>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="grid2">
+          <article class="card">
+            <div class="inner">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <div class="muted"><b>🧩 Logiciel</b></div>
+                <button class="btn" id="favSoftware" title="Ajouter aux favoris" style="padding:6px 10px;">⭐</button>
+              </div>
+              <h3 id="softTitle">—</h3>
+              <div id="softDesc" class="muted">—</div>
+              <div style="height:10px"></div>
+              <div id="softTags" class="tags"></div>
+              <div id="softLinks" class="links"></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="inner">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                <div class="muted"><b>🎮 Jeu</b></div>
+                <button class="btn" id="favGame" title="Ajouter aux favoris" style="padding:6px 10px;">⭐</button>
+              </div>
+              <h3 id="gameTitle">—</h3>
+              <div id="gameDesc" class="muted">—</div>
+              <div style="height:10px"></div>
+              <div id="gameTags" class="tags"></div>
+              <div id="gameLinks" class="links"></div>
+            </div>
+          </article>
+        </div>
+
+        <div style="height:14px"></div>
+        <div class="success">
+          ✅ Local (navigateur) • ✅ Liens officiels • ✅ Aucun tracking • ✅ Favoris persistants
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">© 2026 — Giveaway Linux</div>
+  </div>
+
+  <script src="./js/discover.js"></script>
+</body>
+</html>
