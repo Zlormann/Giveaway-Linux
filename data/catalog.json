@@ -1,8 +1,27 @@
-[
-  {
-    "date": "2026-02-07",
-    "software_id": "gimp",
-    "game_id": "supertuxkart",
-    "generated_utc": "2026-02-07T12:30:00+00:00"
-  }
-]
+{
+  "apps": [
+    {
+      "id": "gimp",
+      "title": "GIMP",
+      "shortDesc": "Retouche photo open-source.",
+      "tags": ["graphisme", "image"],
+      "links": {
+        "official": "https://www.gimp.org/",
+        "download": "https://www.gimp.org/downloads/",
+        "flathub": "https://flathub.org/apps/org.gimp.GIMP"
+      }
+    }
+  ],
+  "games": [
+    {
+      "id": "supertuxkart",
+      "title": "SuperTuxKart",
+      "shortDesc": "Jeu de kart fun et libre.",
+      "tags": ["racing", "linux"],
+      "links": {
+        "official": "https://supertuxkart.net/",
+        "download": "https://supertuxkart.net/Download"
+      }
+    }
+  ]
+}
