@@ -3,121 +3,134 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Giveaway Linux — Découvrir</title>
-  <meta name="description" content="Découvre au hasard un logiciel et un jeu Linux gratuits (liens officiels uniquement, sans tracking)." />
-  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./css/style.css">
+
+  <title>Découvrir — Giveaway Linux</title>
+  <meta name="description" content="Découvre automatiquement un logiciel et un jeu gratuits pour Linux (liens officiels). Une sélection aléatoire basée sur l’historique récent." />
+
+  <!-- ✅ Discover = pas indexé (page aléatoire) -->
+  <meta name="robots" content="noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="theme-color" content="#0b1020" />
+
+  <!-- Canonical : on pointe vers l'accueil -->
+  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Giveaway Linux" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Découvrir — Giveaway Linux" />
+  <meta property="og:description" content="Découvre une sélection aléatoire (logiciel + jeu) : liens officiels uniquement." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://zlormann.github.io/Giveaway-Linux/discover.html" />
+  <meta property="og:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Découvrir — Giveaway Linux" />
+  <meta name="twitter:description" content="Une sélection aléatoire (logiciel + jeu) — liens officiels." />
+  <meta name="twitter:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
+
+  <!-- RSS autodécouverte -->
+  <link rel="alternate" type="application/rss+xml" title="Giveaway Linux — RSS" href="./rss.xml" />
+
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./css/style.css" />
+
+  <!-- Sécurité (statique) -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="Referrer-Policy" content="no-referrer" />
+
+  <!-- JSON-LD WebPage -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Découvrir — Giveaway Linux",
+    "url":"https://zlormann.github.io/Giveaway-Linux/discover.html",
+    "isPartOf":{
+      "@type":"WebSite",
+      "name":"Giveaway Linux",
+      "url":"https://zlormann.github.io/Giveaway-Linux/"
+    },
+    "inLanguage":"fr-FR",
+    "description":"Page de découverte aléatoire (logiciel + jeu) basée sur l’historique."
+  }
+  </script>
 </head>
+
 <body>
   <div class="wrap">
-    <header class="topbar">
+    <header class="topbar" role="banner">
       <div class="brand">
-        <img src="./assets/logo.svg" alt="Logo Giveaway Linux">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="34" height="34" loading="eager">
         <div>
-          <h1>Giveaway Linux</h1>
-          <p>Découvrir au hasard • liens officiels • sans tracking</p>
+          <h1 style="margin:0;font-size:14px;">Giveaway Linux</h1>
+          <p style="margin:0;font-size:12px;color:var(--muted);">Découverte aléatoire • liens officiels</p>
         </div>
       </div>
 
-      <nav class="nav">
-        <a class="tab" href="./index.html">Accueil</a>
-        <a class="tab" href="./archive.html">Archives</a>
-        <a class="tab active" href="./discover.html">Découvrir</a>
-        <a class="tab" href="./favorites.html">Favoris</a>
-        <a class="tab" href="./submit.html">Proposer</a>
-        <a class="tab" href="./about.html">À propos</a>
-        <a class="tab" href="./rss.xml">RSS</a>
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="tab" href="./index.html">🏠 Accueil</a>
+        <a class="tab" href="./archive.html">🗓️ Archives</a>
+        <a class="tab" href="./favorites.html">⭐ Favoris</a>
+        <a class="tab" href="./submit.html">➕ Proposer</a>
+        <a class="tab" href="./about.html">ℹ️ À propos</a>
+        <a class="tab" href="./rss.xml">📡 RSS</a>
       </nav>
     </header>
 
-    <section class="section">
-      <div class="head">
-        <h2>🎲 Découvrir au hasard</h2>
-        <div class="muted">Sélection automatique • URL partageable • anti-répétition</div>
-      </div>
+    <main role="main">
+      <section class="section">
+        <div class="head">
+          <h2>🎲 Découvrir</h2>
+          <div class="muted" id="discoverMeta">Sélection au hasard</div>
+        </div>
+        <div class="body">
+          <div id="discoverError"></div>
 
-      <div class="body">
-        <div id="errorBox"></div>
-
-        <div class="grid2" style="gap:12px;">
-          <div>
-            <div class="muted">Mode</div>
-            <select id="mode" class="input">
-              <option value="both" selected>Logiciel + Jeu</option>
-              <option value="software">Logiciel seulement</option>
-              <option value="game">Jeu seulement</option>
-            </select>
+          <div class="note">
+            Cette page te propose une sélection aléatoire issue des derniers jours (ou du catalogue si besoin).
+            <b>Liens officiels uniquement.</b>
           </div>
 
-          <div>
-            <div class="muted">Éviter les répétitions</div>
-            <select id="avoid" class="input">
-              <option value="on" selected>Oui (évite les derniers tirages)</option>
-              <option value="off">Non (aléatoire total)</option>
-            </select>
-          </div>
-        </div>
+          <div style="height:14px"></div>
 
-        <div style="height:12px"></div>
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn primary" id="roll" type="button">🎲 Relancer</button>
-          <button class="btn" id="share" type="button">🔗 Copier un lien</button>
-          <button class="btn" id="reset" type="button">🧼 Reset anti-répétition</button>
-        </div>
-
-        <div style="height:14px"></div>
-
-        <div class="grid2">
-          <article class="card">
-            <div class="inner">
-              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px">
+          <div class="grid2">
+            <article class="card">
+              <div class="inner">
                 <div class="muted"><b>🧩 Logiciel</b></div>
-                <button class="btn" id="favSoftware" type="button" title="Ajouter aux favoris" style="padding:6px 10px;">⭐</button>
+                <h3 id="dAppTitle">—</h3>
+                <div id="dAppDesc" class="muted">—</div>
+                <div style="height:10px"></div>
+                <div id="dAppTags" class="tags"></div>
+                <div id="dAppLinks" class="links"></div>
               </div>
+            </article>
 
-              <h3 id="softTitle" style="margin:8px 0 8px;">—</h3>
-              <div id="softDesc" class="muted">—</div>
-              <div style="height:10px"></div>
-
-              <div id="softTags" class="tags"></div>
-              <div id="softLinks" class="links"></div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="inner">
-              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px">
+            <article class="card">
+              <div class="inner">
                 <div class="muted"><b>🎮 Jeu</b></div>
-                <button class="btn" id="favGame" type="button" title="Ajouter aux favoris" style="padding:6px 10px;">⭐</button>
+                <h3 id="dGameTitle">—</h3>
+                <div id="dGameDesc" class="muted">—</div>
+                <div style="height:10px"></div>
+                <div id="dGameTags" class="tags"></div>
+                <div id="dGameLinks" class="links"></div>
               </div>
+            </article>
+          </div>
 
-              <h3 id="gameTitle" style="margin:8px 0 8px;">—</h3>
-              <div id="gameDesc" class="muted">—</div>
-              <div style="height:10px"></div>
+          <div style="height:14px"></div>
 
-              <div id="gameTags" class="tags"></div>
-              <div id="gameLinks" class="links"></div>
-            </div>
-          </article>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn primary" id="reroll" type="button">🔄 Relancer</button>
+            <a class="btn" href="./archive.html">Voir les archives</a>
+          </div>
         </div>
+      </section>
 
-        <div style="height:14px"></div>
-        <div class="success">
-          ✅ Stockage local uniquement • ✅ Liens officiels • ✅ Aucun tracking
-        </div>
-
-        <div style="height:10px"></div>
-        <div class="note">
-          Astuce : partage le lien après un tirage. Exemple : <b>discover.html?s=gimp&g=supertuxkart</b>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">© 2026 — Giveaway Linux</div>
+      <div class="footer">✓ Aucun tracking • ✓ Favoris locaux • © 2026 Giveaway Linux</div>
+    </main>
   </div>
 
   <script src="./js/discover.js"></script>
-  <script src="./js/seo_discover.js"></script>
 </body>
 </html>
