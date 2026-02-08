@@ -1,205 +1,217 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- ✅ IMPORTANT : adapte si ton URL change -->
+  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/" />
+
   <title>Giveaway Linux — 1 logiciel + 1 jeu gratuits chaque jour</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux. Liens officiels uniquement. Aucun tracking." />
-  <link rel="alternate" type="application/rss+xml" title="Giveaway Linux RSS" href="rss.xml">
 
-  <style>
-    :root{
-      --bg:#0f172a;
-      --panel:#020617;
-      --border:#1e293b;
-      --text:#e5e7eb;
-      --muted:#a7b0c0;
-      --accent:#38bdf8;
-      --accent2:#22c55e;
-      --warn:#fbbf24;
-      --chip:#0b1227;
-    }
-    *{box-sizing:border-box}
-    body{
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin:0;
-      padding: 2rem;
-    }
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
-    header{
-      display:flex; align-items:center; gap:1rem;
-      margin-bottom: 1rem;
-    }
-    header h1{margin:0}
-    .muted{color:var(--muted)}
-    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;}
-    nav{display:flex; gap:10px; flex-wrap:wrap; margin: .5rem 0 1.2rem}
-    .btn{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:.55rem .85rem;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background: rgba(2,6,23,.35);
-      color:var(--text);
-      text-decoration:none;
-    }
-    .btn.primary{border-color: rgba(56,189,248,.35); color: var(--accent);}
-    .btn:hover{text-decoration:none; border-color:#2f415f}
-    .card{
-      background: var(--panel);
-      border-radius: 14px;
-      padding: 1.2rem;
-      margin-bottom: 1rem;
-      border: 1px solid var(--border);
-    }
-    .grid{display:grid; grid-template-columns: 1fr; gap:12px;}
-    @media (min-width: 900px){ .grid{grid-template-columns:1fr 1fr;} }
+  <meta name="description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux (liens officiels). Favoris locaux, archives, sans compte, aucun tracking." />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="theme-color" content="#0b1020" />
 
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:.3rem .65rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background: rgba(2,6,23,.35);
-      font-size:.9rem;
-      color:var(--muted);
-      white-space:nowrap;
-    }
-    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
-    .chip{
-      display:inline-flex; align-items:center;
-      padding:.28rem .55rem;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background: var(--chip);
-      font-size:.85rem;
-      color: var(--muted);
-    }
+  <!-- Sitemap (optionnel mais utile) -->
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="./sitemap.xml" />
 
-    .searchbar{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-      margin-top:10px;
-    }
-    input[type="text"]{
-      flex: 1 1 260px;
-      padding:.65rem .8rem;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background: rgba(2,6,23,.35);
-      color: var(--text);
-      outline:none;
-    }
-    input[type="text"]::placeholder{color:#7b879a}
-    select{
-      padding:.65rem .8rem;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background: rgba(2,6,23,.35);
-      color: var(--text);
-      outline:none;
-    }
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="Giveaway Linux" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Giveaway Linux — Sélection du jour" />
+  <meta property="og:description" content="1 logiciel + 1 jeu gratuits chaque jour pour Linux (liens officiels uniquement)." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://zlormann.github.io/Giveaway-Linux/" />
+  <meta property="og:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
 
-    .kpi{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-      margin-top:10px;
-    }
-    .kpi .box{
-      border:1px solid var(--border);
-      background: rgba(2,6,23,.25);
-      border-radius:12px;
-      padding:.55rem .75rem;
-      color:var(--muted);
-      font-size:.9rem;
-    }
-    .star{cursor:pointer; user-select:none; font-size:1.15rem; line-height:1;}
-    .star.on{color: var(--warn);}
-    hr{border:none; border-top:1px solid var(--border); margin: 12px 0;}
-    footer{margin-top: 2.2rem; font-size:.92rem; opacity:.75;}
-  </style>
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Giveaway Linux — Sélection du jour" />
+  <meta name="twitter:description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux (liens officiels)." />
+  <meta name="twitter:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
+
+  <!-- Icône / CSS -->
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./css/style.css" />
+
+  <!-- Sécurité (GitHub Pages friendly) -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="Referrer-Policy" content="no-referrer" />
+
+  <!-- ✅ Données structurées (SEO Google) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"WebSite",
+        "name":"Giveaway Linux",
+        "url":"https://zlormann.github.io/Giveaway-Linux/",
+        "description":"Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux (liens officiels).",
+        "inLanguage":"fr-FR",
+        "potentialAction":{
+          "@type":"SearchAction",
+          "target":"https://zlormann.github.io/Giveaway-Linux/?q={search_term_string}",
+          "query-input":"required name=search_term_string"
+        }
+      },
+      {
+        "@type":"Organization",
+        "name":"Giveaway Linux",
+        "url":"https://zlormann.github.io/Giveaway-Linux/",
+        "logo":"https://zlormann.github.io/Giveaway-Linux/assets/logo.svg"
+      }
+    ]
+  }
+  </script>
 </head>
+
 <body>
+  <!-- Accessibilité -->
+  <a href="#content" class="tab" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"
+     onfocus="this.style.left='16px';this.style.top='16px';this.style.width='auto';this.style.height='auto';this.style.overflow='visible';"
+     onblur="this.style.left='-9999px';this.style.top='auto';this.style.width='1px';this.style.height='1px';this.style.overflow='hidden';">
+    Aller au contenu
+  </a>
 
-<header>
-  <img src="assets/logo.svg" width="64" alt="Giveaway Linux">
-  <div>
-    <h1>Giveaway Linux</h1>
-    <div class="muted">🎁 1 logiciel + 1 jeu gratuits chaque jour – liens officiels uniquement.</div>
+  <div class="wrap">
+    <!-- TOP BAR -->
+    <header class="topbar" role="banner">
+      <div class="brand">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="34" height="34" loading="eager">
+        <div>
+          <h1 style="margin:0;font-size:14px;">Giveaway Linux</h1>
+          <p style="margin:0;font-size:12px;color:var(--muted);">1 logiciel + 1 jeu gratuits chaque jour — liens officiels uniquement.</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="tab active" href="./index.html">🏠 Accueil</a>
+        <a class="tab" href="./archive.html">🗓️ Archives</a>
+        <a class="tab" href="./favorites.html">⭐ Favoris</a>
+        <a class="tab" href="./submit.html">➕ Proposer</a>
+        <a class="tab" href="./about.html">ℹ️ À propos</a>
+        <a class="tab" href="./rss.xml">📡 RSS</a>
+      </nav>
+    </header>
+
+    <main id="content" role="main">
+      <!-- TOOLBAR -->
+      <section class="section" aria-labelledby="searchTitle">
+        <div class="head">
+          <h2 id="searchTitle">🔎 Recherche</h2>
+          <div class="muted">Temps réel • sans backend</div>
+        </div>
+        <div class="body">
+          <div class="grid2" style="gap:12px; align-items:end;">
+            <div>
+              <div class="muted">Rechercher dans les 7 derniers jours</div>
+              <input id="q" class="input" placeholder="Ex: gimp, inkscape, supertuxkart..." autocomplete="off" />
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;">
+              <select id="typeFilter" class="input" style="max-width:220px;">
+                <option value="all">Tout</option>
+                <option value="app">Logiciels</option>
+                <option value="game">Jeux</option>
+              </select>
+              <button id="clearBtn" class="btn" type="button">Effacer</button>
+            </div>
+          </div>
+
+          <div style="height:10px"></div>
+
+          <div class="tags">
+            <span class="tag">🛡 Aucun tracking</span>
+            <span class="tag">⭐ Favoris locaux (pas de compte)</span>
+            <span class="tag">📦 Données publiques : /data</span>
+          </div>
+
+          <div style="height:10px"></div>
+
+          <!-- Découvrir -->
+          <a class="link" href="./discover.html" aria-label="Découvrir une sélection au hasard">🎲 Découvrir</a>
+        </div>
+      </section>
+
+      <!-- AUJOURD'HUI -->
+      <section class="section" aria-labelledby="todayTitle">
+        <div class="head">
+          <h2 id="todayTitle">🎁 Aujourd’hui</h2>
+          <div class="muted" id="todayMeta">Sélection du jour</div>
+        </div>
+        <div class="body">
+          <div id="todayBox" class="note">Chargement...</div>
+        </div>
+      </section>
+
+      <!-- 7 DERNIERS JOURS -->
+      <section class="section" aria-labelledby="last7Title">
+        <div class="head">
+          <h2 id="last7Title">🗓️ Les 7 derniers jours</h2>
+          <div class="muted">Historique rapide</div>
+        </div>
+        <div class="body">
+          <div id="last7Box" class="note">Chargement...</div>
+        </div>
+      </section>
+
+      <!-- TOP FAVORIS -->
+      <section class="section" aria-labelledby="favTitle">
+        <div class="head">
+          <h2 id="favTitle">⭐ Top favoris (sur ce navigateur)</h2>
+          <div class="muted">Stockés en localStorage</div>
+        </div>
+        <div class="body">
+          <div id="favBox" class="note">Chargement...</div>
+        </div>
+      </section>
+
+      <div class="footer">✓ Projet communautaire • ✓ Aucun tracking • © 2026 Giveaway Linux</div>
+    </main>
   </div>
-</header>
 
-<nav>
-  <a class="btn primary" href="index.html">🏠 Accueil</a>
-  <a class="btn" href="archive.html">🗓️ Archives</a>
-  <a class="btn" href="favorites.html">⭐ Favoris</a>
-  <a class="btn" href="submit.html">➕ Proposer</a>
-  <a class="btn" href="about.html">ℹ️ À propos</a>
-  <a class="btn" href="rss.xml">📡 RSS</a>
-</nav>
-
-<div class="card">
-  <div class="row">
-    <div class="pill">📅 Sélection : <strong style="color:var(--text)"><span id="pick-date">—</span></strong></div>
-    <div class="pill">⏳ Prochaine sélection dans : <strong style="color:var(--text)"><span id="countdown">—</span></strong></div>
-  </div>
-
-  <div class="searchbar">
-    <input id="q" type="text" placeholder="Rechercher dans les 7 derniers jours (ex: gimp, inkscape, supertuxkart)…">
-    <select id="filter">
-      <option value="all">Tout</option>
-      <option value="software">Logiciels</option>
-      <option value="games">Jeux</option>
-    </select>
-    <a class="btn" href="#" id="clear">Effacer</a>
-  </div>
-
-  <div class="kpi">
-    <div class="box">🛡️ Aucun tracking</div>
-    <div class="box">✅ Favoris locaux (pas de compte)</div>
-    <div class="box">📦 Données publiques : /data</div>
-  </div>
-</div>
-
-<h2>🎁 Aujourd’hui</h2>
-<div id="today" class="grid">
-  <div class="card">Chargement…</div>
-</div>
-
-<h2>🗓️ Les 7 derniers jours</h2>
-<div id="last7" class="grid">
-  <div class="card">Chargement…</div>
-</div>
-
-<h2>⭐ Top favoris (sur ce navigateur)</h2>
-<div id="topFav" class="grid">
-  <div class="card">Chargement…</div>
-</div>
-
-<footer>
-  ✔ Projet communautaire • ✔ Aucun tracking • © 2026 Giveaway Linux
-</footer>
-
-<script type="module" src="./js/app.js"></script>
+  <!-- JS principal -->
   <script src="./js/app.js"></script>
-<script src="./js/seo.js"></script>
+
+  <!-- Petit JS UI -->
+  <script>
+    (function(){
+      const $ = (s)=>document.querySelector(s);
+
+      const clearBtn = $("#clearBtn");
+      const q = $("#q");
+      if(clearBtn && q){
+        clearBtn.addEventListener("click", ()=>{
+          q.value = "";
+          q.focus();
+        });
+      }
+
+      const favBox = $("#favBox");
+      if(favBox){
+        try{
+          const raw = localStorage.getItem("gl_favs");
+          const favs = raw ? JSON.parse(raw) : [];
+          if(!Array.isArray(favs) || favs.length === 0){
+            favBox.textContent = "Aucun favori pour l'instant. Clique sur ⭐ pour en ajouter.";
+          }else{
+            favBox.innerHTML = `<div class="success">Tu as déjà ${favs.length} favori(s) 👍</div>`;
+          }
+        }catch{
+          favBox.textContent = "Aucun favori pour l'instant.";
+        }
+      }
+
+      // Bonus : support ?q= depuis l'URL (utile SEO / partage)
+      try{
+        const params = new URLSearchParams(location.search);
+        const v = params.get("q");
+        if(v && q){
+          q.value = v;
+        }
+      }catch{}
+    })();
+  </script>
 </body>
 </html>
-<!-- Barre de recherche -->
-<section class="section">
-  <div class="head">
-    <h2>🔍 Recherche</h2>
-    <span class="muted">Temps réel • sans backend</span>
-  </div>
-  <div class="body">
-    <input
-      id="searchInput"
-      class="input"
-      placeholder="Rechercher un logiciel ou un jeu (ex : gimp, rpg, montage...)"
-      autocomplete="off"
-    />
-    <div id="searchResults" class="grid2" style="margin-top:14px"></div>
-    <a class="tab" href="./discover.html">Découvrir</a>
-  </div>
-</section>
