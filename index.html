@@ -3,214 +3,475 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-  <!-- ✅ IMPORTANT : adapte si ton URL change -->
-  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/" />
-
-  <title>Giveaway Linux — 1 logiciel + 1 jeu gratuits chaque jour</title>
-
-  <meta name="description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux (liens officiels). Favoris locaux, archives, sans compte, aucun tracking." />
-  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#0b1020" />
 
-  <!-- Sitemap (optionnel mais utile) -->
-  <link rel="sitemap" type="application/xml" title="Sitemap" href="./sitemap.xml" />
+  <title>Giveaway Linux — 1 logiciel + 1 jeu gratuits chaque jour</title>
+  <meta name="description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux, avec liens officiels uniquement. Archives, favoris, recherche instantanée — sans compte, sans tracking." />
+  <meta name="keywords" content="linux, gratuit, logiciel, jeu, open source, flathub, steam, itch.io, giveaway" />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+
+  <!-- Canonical (important pour GitHub Pages) -->
+  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/" />
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="Giveaway Linux — RSS" href="./rss.xml" />
+  <!-- Atom hint (améliore la détection du flux par certains lecteurs) -->
+  <link rel="alternate" type="application/atom+xml" title="Giveaway Linux — Atom" href="./rss.xml" />
 
   <!-- Open Graph -->
   <meta property="og:site_name" content="Giveaway Linux" />
-  <meta property="og:locale" content="fr_FR" />
-  <meta property="og:title" content="Giveaway Linux — Sélection du jour" />
-  <meta property="og:description" content="1 logiciel + 1 jeu gratuits chaque jour pour Linux (liens officiels uniquement)." />
   <meta property="og:type" content="website" />
+  <meta property="og:title" content="Giveaway Linux — 1 logiciel + 1 jeu gratuits chaque jour" />
+  <meta property="og:description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux. Liens officiels uniquement. Archives et favoris. Zéro tracking." />
   <meta property="og:url" content="https://zlormann.github.io/Giveaway-Linux/" />
-  <meta property="og:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
+  <meta property="og:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.png" />
 
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Giveaway Linux — Sélection du jour" />
-  <meta name="twitter:description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux (liens officiels)." />
-  <meta name="twitter:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Giveaway Linux — 1 logiciel + 1 jeu gratuits chaque jour" />
+  <meta name="twitter:description" content="Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux. Liens officiels uniquement. Archives et favoris. Zéro tracking." />
+  <meta name="twitter:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.png" />
 
-  <!-- Icône / CSS -->
+  <!-- Favicons -->
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+
+  <!-- Perf -->
+  <link rel="preload" href="./css/style.css" as="style" />
   <link rel="stylesheet" href="./css/style.css" />
 
-  <!-- Sécurité (GitHub Pages friendly) -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta http-equiv="Referrer-Policy" content="no-referrer" />
-
-  <!-- ✅ Données structurées (SEO Google) -->
+  <!-- JSON-LD (SEO) -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@graph":[
-      {
-        "@type":"WebSite",
-        "name":"Giveaway Linux",
-        "url":"https://zlormann.github.io/Giveaway-Linux/",
-        "description":"Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux (liens officiels).",
-        "inLanguage":"fr-FR",
-        "potentialAction":{
-          "@type":"SearchAction",
-          "target":"https://zlormann.github.io/Giveaway-Linux/?q={search_term_string}",
-          "query-input":"required name=search_term_string"
-        }
-      },
-      {
-        "@type":"Organization",
-        "name":"Giveaway Linux",
-        "url":"https://zlormann.github.io/Giveaway-Linux/",
-        "logo":"https://zlormann.github.io/Giveaway-Linux/assets/logo.svg"
-      }
-    ]
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Giveaway Linux",
+    "url": "https://zlormann.github.io/Giveaway-Linux/",
+    "description": "Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux, avec liens officiels uniquement. Archives, favoris, recherche instantanée — sans compte, sans tracking.",
+    "inLanguage": "fr",
+    "publisher": {
+      "@type": "Person",
+      "name": "Zlormann"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://zlormann.github.io/Giveaway-Linux/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   }
   </script>
+
+  <!-- Security (light, compatible GitHub Pages) -->
+  <!-- (Tu ne peux pas forcer un CSP parfait via meta si tu utilises des libs externes,
+       mais là on reste full local, donc ça passe très bien.) -->
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 </head>
 
 <body>
-  <!-- Accessibilité -->
-  <a href="#content" class="tab" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;"
-     onfocus="this.style.left='16px';this.style.top='16px';this.style.width='auto';this.style.height='auto';this.style.overflow='visible';"
-     onblur="this.style.left='-9999px';this.style.top='auto';this.style.width='1px';this.style.height='1px';this.style.overflow='hidden';">
-    Aller au contenu
-  </a>
-
   <div class="wrap">
-    <!-- TOP BAR -->
     <header class="topbar" role="banner">
       <div class="brand">
-        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="34" height="34" loading="eager">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="34" height="34" loading="eager" />
         <div>
-          <h1 style="margin:0;font-size:14px;">Giveaway Linux</h1>
-          <p style="margin:0;font-size:12px;color:var(--muted);">1 logiciel + 1 jeu gratuits chaque jour — liens officiels uniquement.</p>
+          <h1>Giveaway Linux</h1>
+          <p>🎁 1 logiciel + 1 jeu gratuits chaque jour — liens officiels uniquement.</p>
         </div>
       </div>
 
-      <nav class="nav" aria-label="Navigation principale">
-        <a class="tab active" href="./index.html">🏠 Accueil</a>
-        <a class="tab" href="./archive.html">🗓️ Archives</a>
+      <nav class="nav" aria-label="Navigation">
+        <a class="tab active" href="./index.html" aria-current="page">🏠 Accueil</a>
+        <a class="tab" href="./archive.html">🗓 Archives</a>
         <a class="tab" href="./favorites.html">⭐ Favoris</a>
         <a class="tab" href="./submit.html">➕ Proposer</a>
         <a class="tab" href="./about.html">ℹ️ À propos</a>
-        <a class="tab" href="./rss.xml">📡 RSS</a>
+        <a class="tab" href="./rss.xml" rel="nofollow">📡 RSS</a>
       </nav>
     </header>
 
-    <main id="content" role="main">
-      <!-- TOOLBAR -->
-      <section class="section" aria-labelledby="searchTitle">
-        <div class="head">
-          <h2 id="searchTitle">🔎 Recherche</h2>
-          <div class="muted">Temps réel • sans backend</div>
-        </div>
-        <div class="body">
-          <div class="grid2" style="gap:12px; align-items:end;">
-            <div>
-              <div class="muted">Rechercher dans les 7 derniers jours</div>
-              <input id="q" class="input" placeholder="Ex: gimp, inkscape, supertuxkart..." autocomplete="off" />
-            </div>
-            <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;">
-              <select id="typeFilter" class="input" style="max-width:220px;">
-                <option value="all">Tout</option>
-                <option value="app">Logiciels</option>
-                <option value="game">Jeux</option>
-              </select>
-              <button id="clearBtn" class="btn" type="button">Effacer</button>
-            </div>
+    <!-- Control bar -->
+    <section class="section" aria-label="Outils">
+      <div class="head">
+        <h2>🔍 Recherche</h2>
+        <div class="muted" id="countdownBox">⏳ Prochaine sélection : <span id="countdown">—</span></div>
+      </div>
+      <div class="body">
+        <div class="grid2" style="gap:12px">
+          <div>
+            <label class="muted" for="q">Rechercher dans les 30 derniers jours</label>
+            <input id="q" class="input" type="search" placeholder="Ex : gimp, inkscape, supertuxkart..." autocomplete="off" />
           </div>
-
-          <div style="height:10px"></div>
-
-          <div class="tags">
-            <span class="tag">🛡 Aucun tracking</span>
-            <span class="tag">⭐ Favoris locaux (pas de compte)</span>
-            <span class="tag">📦 Données publiques : /data</span>
+          <div>
+            <label class="muted" for="filter">Filtre</label>
+            <select id="filter" class="input">
+              <option value="all">Tout</option>
+              <option value="apps">Logiciels</option>
+              <option value="games">Jeux</option>
+            </select>
           </div>
+        </div>
 
-          <div style="height:10px"></div>
+        <div style="height:10px"></div>
 
-          <!-- Découvrir -->
-          <a class="link" href="./discover.html" aria-label="Découvrir une sélection au hasard">🎲 Découvrir</a>
+        <div class="tags">
+          <span class="tag">🛡️ Aucun tracking</span>
+          <span class="tag">⭐ Favoris locaux (sans compte)</span>
+          <span class="tag">📦 Données publiques : /data</span>
+          <a class="tag" href="./discover.html" title="Découvrir une sélection au hasard">🎲 Découvrir</a>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- AUJOURD'HUI -->
-      <section class="section" aria-labelledby="todayTitle">
-        <div class="head">
-          <h2 id="todayTitle">🎁 Aujourd’hui</h2>
-          <div class="muted" id="todayMeta">Sélection du jour</div>
+    <!-- Today -->
+    <section class="section" aria-label="Sélection du jour">
+      <div class="head">
+        <h2>🎁 Aujourd’hui</h2>
+        <div class="muted">
+          Sélection : <span id="todayDate">—</span>
         </div>
-        <div class="body">
-          <div id="todayBox" class="note">Chargement...</div>
-        </div>
-      </section>
+      </div>
+      <div class="body">
+        <div id="todayBox" class="note">Chargement…</div>
+      </div>
+    </section>
 
-      <!-- 7 DERNIERS JOURS -->
-      <section class="section" aria-labelledby="last7Title">
-        <div class="head">
-          <h2 id="last7Title">🗓️ Les 7 derniers jours</h2>
-          <div class="muted">Historique rapide</div>
-        </div>
-        <div class="body">
-          <div id="last7Box" class="note">Chargement...</div>
-        </div>
-      </section>
+    <!-- Last 30 days -->
+    <section class="section" aria-label="Historique">
+      <div class="head">
+        <h2>🗓 Les 30 derniers jours</h2>
+        <div class="muted">Recherche instantanée • sans backend</div>
+      </div>
+      <div class="body">
+        <div id="historyBox" class="note">Chargement…</div>
+      </div>
+    </section>
 
-      <!-- TOP FAVORIS -->
-      <section class="section" aria-labelledby="favTitle">
-        <div class="head">
-          <h2 id="favTitle">⭐ Top favoris (sur ce navigateur)</h2>
-          <div class="muted">Stockés en localStorage</div>
-        </div>
-        <div class="body">
-          <div id="favBox" class="note">Chargement...</div>
-        </div>
-      </section>
+    <!-- Favorites preview -->
+    <section class="section" aria-label="Favoris">
+      <div class="head">
+        <h2>⭐ Top favoris (sur ce navigateur)</h2>
+        <div class="muted"><a class="tab" style="padding:6px 10px" href="./favorites.html">Voir tous</a></div>
+      </div>
+      <div class="body">
+        <div id="favBox" class="note">Chargement…</div>
+      </div>
+    </section>
 
-      <div class="footer">✓ Projet communautaire • ✓ Aucun tracking • © 2026 Giveaway Linux</div>
-    </main>
+    <footer class="footer" role="contentinfo">
+      ✓ Projet communautaire • ✓ Aucun tracking • © 2026 Giveaway Linux
+    </footer>
   </div>
 
-  <!-- JS principal -->
-  <script src="./js/app.js"></script>
-
-  <!-- Petit JS UI -->
   <script>
-    (function(){
-      const $ = (s)=>document.querySelector(s);
+    // --- Base URL safe for GitHub Pages subfolder ---
+    const BASE = new URL("./", window.location.href);
 
-      const clearBtn = $("#clearBtn");
-      const q = $("#q");
-      if(clearBtn && q){
-        clearBtn.addEventListener("click", ()=>{
-          q.value = "";
-          q.focus();
+    // Security helpers
+    const esc = (s) => String(s ?? "")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+    function pickUrl(obj){
+      return obj?.url || obj?.home_url || obj?.download_url || obj?.links?.download || obj?.links?.official || "#";
+    }
+
+    async function loadJSON(path){
+      const u = new URL(path, BASE).toString();
+      const res = await fetch(u, { cache: "no-store" });
+      if(!res.ok) throw new Error(`HTTP ${res.status} sur ${path}`);
+      return await res.json();
+    }
+
+    function toISODate(d){
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const da = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${da}`;
+    }
+
+    function fmtDateISO(iso){
+      try{
+        const [y,m,d] = iso.split("-").map(Number);
+        const dt = new Date(y, m-1, d, 12, 0, 0);
+        return dt.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"2-digit" });
+      }catch{ return iso; }
+    }
+
+    // Favorites (localStorage)
+    const FAV_KEY = "gl_favorites_v1";
+    function getFavs(){
+      try{ return JSON.parse(localStorage.getItem(FAV_KEY) || "[]"); }catch{ return []; }
+    }
+    function setFavs(list){
+      localStorage.setItem(FAV_KEY, JSON.stringify(list));
+    }
+    function isFav(id){ return getFavs().includes(id); }
+    function toggleFav(id){
+      const list = getFavs();
+      const i = list.indexOf(id);
+      if(i>=0) list.splice(i,1); else list.unshift(id);
+      setFavs(list.slice(0,200));
+    }
+
+    // UI renderers
+    function renderToday(software, game){
+      const todayBox = document.getElementById("todayBox");
+      const todayDate = document.getElementById("todayDate");
+
+      const d = new Date();
+      todayDate.textContent = fmtDateISO(toISODate(d));
+
+      const swName = software?.name || software?.title || "Aucun logiciel trouvé.";
+      const swMeta = software?.category || (software?.tags?.[0] ?? "—");
+      const swUrl  = pickUrl(software);
+
+      const gName = game?.name || game?.title || "Aucun jeu trouvé.";
+      const gMeta = game?.genre || (game?.tags?.[0] ?? "—");
+      const gUrl  = pickUrl(game);
+
+      const swId = software?.id || `soft:${swName}`;
+      const gId  = game?.id || `game:${gName}`;
+
+      todayBox.className = "card";
+      todayBox.innerHTML = `
+        <div class="inner">
+          <div class="grid2">
+            <div>
+              <div class="muted"><b>🧩 Logiciel</b></div>
+              <h3 style="margin:6px 0 4px">${esc(swName)}</h3>
+              <div class="tags"><span class="tag">${esc(swMeta)}</span></div>
+              <div class="links">
+                <a class="btn primary" href="${esc(swUrl)}" target="_blank" rel="noopener noreferrer">⬇ Télécharger logiciel</a>
+                <button class="btn" type="button" data-fav="${esc(swId)}">${isFav(swId) ? "⭐ Retirer" : "☆ Favori"}</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="muted"><b>🎮 Jeu</b></div>
+              <h3 style="margin:6px 0 4px">${esc(gName)}</h3>
+              <div class="tags"><span class="tag">${esc(gMeta)}</span></div>
+              <div class="links">
+                <a class="btn primary" href="${esc(gUrl)}" target="_blank" rel="noopener noreferrer">⬇ Télécharger jeu</a>
+                <button class="btn" type="button" data-fav="${esc(gId)}">${isFav(gId) ? "⭐ Retirer" : "☆ Favori"}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      todayBox.querySelectorAll("[data-fav]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const id = btn.getAttribute("data-fav");
+          toggleFav(id);
+          // re-render quickly
+          renderToday(software, game);
+          renderFavPreview();
+        });
+      });
+    }
+
+    function renderHistory(items){
+      const box = document.getElementById("historyBox");
+      if(!items || items.length === 0){
+        box.className = "note";
+        box.textContent = "Ajoute data/catalog.json (ou data/catalog.json + data/picks.json) pour afficher l'historique.";
+        return;
+      }
+
+      box.className = "";
+      box.innerHTML = `<div id="historyList" class="grid2" style="grid-template-columns:1fr; gap:12px"></div>`;
+      const list = document.getElementById("historyList");
+
+      items.forEach(it=>{
+        const sw = it.software || it.app || null;
+        const ga = it.game || null;
+
+        const swName = sw?.name || sw?.title || "Logiciel";
+        const swMeta = sw?.category || (sw?.tags?.[0] ?? "—");
+        const swUrl  = pickUrl(sw);
+
+        const gName = ga?.name || ga?.title || "Jeu";
+        const gMeta = ga?.genre || (ga?.tags?.[0] ?? "—");
+        const gUrl  = pickUrl(ga);
+
+        const swId = sw?.id || `soft:${swName}`;
+        const gId  = ga?.id || `game:${gName}`;
+
+        const row = document.createElement("div");
+        row.className = "card";
+        row.dataset.search = `${swName} ${swMeta} ${gName} ${gMeta}`.toLowerCase();
+        row.dataset.type = "all";
+        row.innerHTML = `
+          <div class="inner">
+            <div class="muted">📅 ${esc(it.date || "—")}</div>
+            <div class="hr"></div>
+
+            <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap">
+              <div>
+                <b>🧩 ${esc(swName)}</b> <span class="muted">(${esc(swMeta)})</span>
+                <div class="links" style="margin-top:8px">
+                  <a class="link" href="${esc(swUrl)}" target="_blank" rel="noopener noreferrer">⬇ Télécharger logiciel</a>
+                  <button class="btn" style="padding:8px 10px" type="button" data-fav="${esc(swId)}">${isFav(swId) ? "⭐" : "☆"}</button>
+                </div>
+              </div>
+
+              <div>
+                <b>🎮 ${esc(gName)}</b> <span class="muted">(${esc(gMeta)})</span>
+                <div class="links" style="margin-top:8px">
+                  <a class="link" href="${esc(gUrl)}" target="_blank" rel="noopener noreferrer">⬇ Télécharger jeu</a>
+                  <button class="btn" style="padding:8px 10px" type="button" data-fav="${esc(gId)}">${isFav(gId) ? "⭐" : "☆"}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        row.querySelectorAll("[data-fav]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = btn.getAttribute("data-fav");
+            toggleFav(id);
+            // update only stars in this row
+            row.querySelectorAll("[data-fav]").forEach(b=>{
+              const bid = b.getAttribute("data-fav");
+              b.textContent = isFav(bid) ? "⭐" : "☆";
+            });
+            renderFavPreview();
+          });
+        });
+
+        list.appendChild(row);
+      });
+    }
+
+    function renderFavPreview(){
+      const box = document.getElementById("favBox");
+      const favs = getFavs().slice(0, 10);
+      if(favs.length === 0){
+        box.className = "note";
+        box.textContent = "Aucun favori pour l’instant. Clique sur ☆ pour en ajouter.";
+        return;
+      }
+      box.className = "success";
+      box.innerHTML = `
+        <div><b>${favs.length}</b> favori(s) enregistré(s) sur ce navigateur :</div>
+        <div style="height:8px"></div>
+        <div class="tags">${favs.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>
+      `;
+    }
+
+    function setupSearch(){
+      const q = document.getElementById("q");
+      const filter = document.getElementById("filter");
+
+      function apply(){
+        const val = (q.value || "").trim().toLowerCase();
+        const f = filter.value;
+
+        document.querySelectorAll("#historyList .card").forEach(card=>{
+          const okSearch = !val || (card.dataset.search || "").includes(val);
+          // type filter is simple for now (all), kept for your future split
+          const okType = (f === "all") ? true : true;
+          card.style.display = (okSearch && okType) ? "" : "none";
         });
       }
 
-      const favBox = $("#favBox");
-      if(favBox){
-        try{
-          const raw = localStorage.getItem("gl_favs");
-          const favs = raw ? JSON.parse(raw) : [];
-          if(!Array.isArray(favs) || favs.length === 0){
-            favBox.textContent = "Aucun favori pour l'instant. Clique sur ⭐ pour en ajouter.";
-          }else{
-            favBox.innerHTML = `<div class="success">Tu as déjà ${favs.length} favori(s) 👍</div>`;
-          }
-        }catch{
-          favBox.textContent = "Aucun favori pour l'instant.";
-        }
-      }
+      q.addEventListener("input", apply);
+      filter.addEventListener("change", apply);
 
-      // Bonus : support ?q= depuis l'URL (utile SEO / partage)
+      // Support ?q=...
+      const params = new URLSearchParams(location.search);
+      const qp = params.get("q");
+      if(qp){
+        q.value = qp;
+        apply();
+      }
+    }
+
+    // Countdown to next local midnight (simple + clean)
+    function startCountdown(){
+      const el = document.getElementById("countdown");
+      function tick(){
+        const now = new Date();
+        const next = new Date(now);
+        next.setHours(24,0,0,0);
+        const diff = Math.max(0, next - now);
+
+        const h = String(Math.floor(diff/3600000)).padStart(2,"0");
+        const m = String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
+        const s = String(Math.floor((diff%60000)/1000)).padStart(2,"0");
+
+        el.textContent = `${h}:${m}:${s}`;
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    (async function init(){
       try{
-        const params = new URLSearchParams(location.search);
-        const v = params.get("q");
-        if(v && q){
-          q.value = v;
+        // Ton format actuel :
+        // - data/picks.json + data/software.json + data/games.json
+        // OU futur : data/catalog.json + data/picks.json
+        // Ici on essaye d'abord le format "picks + lists"
+        const [pick, softwareList, gamesList] = await Promise.all([
+          loadJSON("data/picks.json"),
+          loadJSON("data/software.json").catch(()=>null),
+          loadJSON("data/games.json").catch(()=>null)
+        ]);
+
+        let software = null;
+        let game = null;
+
+        if(Array.isArray(softwareList) && pick?.software_id){
+          software = softwareList.find(s => s.id === pick.software_id) || null;
         }
-      }catch{}
+        if(Array.isArray(gamesList) && pick?.game_id){
+          game = gamesList.find(g => g.id === pick.game_id) || null;
+        }
+
+        // fallback si un jour tu passes au format picks.json "current"
+        if(!software && pick?.current?.app) software = pick.current.app;
+        if(!game && pick?.current?.game) game = pick.current.game;
+
+        renderToday(software, game);
+
+        // Historique 30 jours via data/catalog.json (ton script python le génère)
+        const catalog = await loadJSON("data/catalog.json").catch(()=>[]);
+        // On accepte 2 formats :
+        // 1) catalog = [ {date, software_id, game_id, ...}, ...]
+        // 2) catalog = { apps:[], games:[] } (catalog de base)
+        let historyItems = [];
+        if(Array.isArray(catalog)){
+          // Si on a data/software.json & data/games.json, on peut enrichir
+          if(Array.isArray(softwareList) && Array.isArray(gamesList)){
+            historyItems = catalog.map(e=>{
+              const sw = softwareList.find(s=>s.id===e.software_id) || null;
+              const ga = gamesList.find(g=>g.id===e.game_id) || null;
+              return { date: e.date, software: sw, game: ga };
+            });
+          }else{
+            historyItems = catalog.map(e=>({ date: e.date, software: null, game: null }));
+          }
+        }else{
+          // format "catalog de base" -> pas d'historique
+          historyItems = [];
+        }
+
+        renderHistory(historyItems);
+        renderFavPreview();
+        setupSearch();
+        startCountdown();
+
+      }catch(err){
+        console.error(err);
+        document.getElementById("todayBox").className = "danger";
+        document.getElementById("todayBox").textContent = `Erreur : ${err.message || err}`;
+
+        document.getElementById("historyBox").className = "danger";
+        document.getElementById("historyBox").textContent = `Erreur : ${err.message || err}`;
+
+        document.getElementById("favBox").className = "danger";
+        document.getElementById("favBox").textContent = `Erreur : ${err.message || err}`;
+      }
     })();
   </script>
 </body>
