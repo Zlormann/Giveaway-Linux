@@ -1,18 +1,13 @@
 import fs from "node:fs";
 
-const SITE = "https://zlormann.github.io/Giveaway-Linux/";
-const FEED_URL = SITE + "rss.xml";
-const PICKS_PATH = "data/picks.json";
-const OUT_PATH = "rss.xml";
+const SITE = "https://zlormann.github.io/Giveaway-Linux";
+const OUT = "rss.xml";
 
-// Combien d'items max dans le flux (sélection + historiques)
-const MAX_ITEMS = 60;
-
-function loadJson(p) {
-  return JSON.parse(fs.readFileSync(p, "utf8"));
+function readJson(path) {
+  return JSON.parse(fs.readFileSync(path, "utf8"));
 }
 
-function xmlEscape(s) {
+function escXml(s) {
   return String(s ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -21,121 +16,107 @@ function xmlEscape(s) {
     .replaceAll("'", "&apos;");
 }
 
-function toRFC822(dateISO) {
-  // dateISO : YYYY-MM-DD
+function isoToRfc2822(dateISO) {
+  // dateISO: "YYYY-MM-DD"
   const d = new Date(`${dateISO}T12:00:00Z`);
-  return d.toUTCString();
+  return d.toUTCString(); // RFC2822 ok
 }
 
-function normalizeUrl(u) {
-  try {
-    return new URL(u).toString();
-  } catch {
-    return null;
-  }
+function pickBestUrl(obj) {
+  return obj?.url || obj?.download_url || obj?.home_url || "";
 }
 
-function pickUrl(obj) {
-  const L = obj?.links || {};
-  return (
-    normalizeUrl(L.download) ||
-    normalizeUrl(L.official) ||
-    normalizeUrl(L.flathub) ||
-    normalizeUrl(L.steam) ||
-    normalizeUrl(L.itch) ||
-    null
-  );
-}
-
-function itemLink(entry) {
-  // Pour un site statique sans page /YYYY/MM/DD :
-  // on utilise la page d'accueil + ancre issue/date pour être stable.
-  const anchor = entry?.issue ? `issue-${entry.issue}` : `date-${entry.date}`;
-  return SITE + `#${encodeURIComponent(anchor)}`;
-}
-
-function buildItem(entry) {
-  const date = entry?.date || "1970-01-01";
-  const issue = entry?.issue || "—";
-
-  const app = entry?.app || {};
-  const game = entry?.game || {};
-
-  const appTitle = app.title || "Logiciel";
-  const gameTitle = game.title || "Jeu";
-
-  const title = `[#${issue}] ${appTitle} + ${gameTitle}`;
-
-  const appUrl = pickUrl(app);
-  const gameUrl = pickUrl(game);
-
-  const descParts = [];
-  descParts.push(`<p><b>🧩 Logiciel :</b> ${xmlEscape(appTitle)}</p>`);
-  if (app.shortDesc) descParts.push(`<p>${xmlEscape(app.shortDesc)}</p>`);
-  if (appUrl) descParts.push(`<p>⬇ <a href="${xmlEscape(appUrl)}">Télécharger logiciel (officiel)</a></p>`);
-
-  descParts.push(`<hr />`);
-
-  descParts.push(`<p><b>🎮 Jeu :</b> ${xmlEscape(gameTitle)}</p>`);
-  if (game.shortDesc) descParts.push(`<p>${xmlEscape(game.shortDesc)}</p>`);
-  if (gameUrl) descParts.push(`<p>⬇ <a href="${xmlEscape(gameUrl)}">Télécharger jeu (officiel)</a></p>`);
-
-  descParts.push(`<p><small>✅ Liens officiels • ✅ Aucun tracking • Giveaway Linux</small></p>`);
-
-  const link = itemLink(entry);
-
-  // GUID stable : issue+date
-  const guid = `${SITE}rss#${issue}-${date}`;
-
+function itemBlock({ title, link, guid, pubDate, description }) {
   return `
     <item>
-      <title>${xmlEscape(title)}</title>
-      <link>${xmlEscape(link)}</link>
-      <guid isPermaLink="false">${xmlEscape(guid)}</guid>
-      <pubDate>${xmlEscape(toRFC822(date))}</pubDate>
-      <description><![CDATA[
-${descParts.join("\n")}
-      ]]></description>
-    </item>
-  `.trim();
+      <title>${escXml(title)}</title>
+      <link>${escXml(link)}</link>
+      <guid isPermaLink="false">${escXml(guid)}</guid>
+      <pubDate>${escXml(pubDate)}</pubDate>
+      <description><![CDATA[${description}]]></description>
+    </item>`;
 }
 
 function main() {
-  const picks = loadJson(PICKS_PATH);
+  const picks = readJson("data/picks.json");
+  const catalog = readJson("data/catalog.json"); // liste d’archives 30 jours
+  const software = readJson("data/software.json");
+  const games = readJson("data/games.json");
 
-  const items = [];
+  // On fabrique une liste d’entrées RSS = current + catalog (sans doublons date)
+  const entries = [];
+  if (picks?.current?.date) {
+    entries.push({
+      date: picks.current.date,
+      software_id: picks.current.software_id,
+      game_id: picks.current.game_id,
+    });
+  }
 
-  if (picks?.current?.date) items.push(picks.current);
-  if (Array.isArray(picks?.history)) items.push(...picks.history);
+  if (Array.isArray(catalog)) {
+    for (const e of catalog) {
+      if (!e?.date) continue;
+      entries.push({
+        date: e.date,
+        software_id: e.software_id,
+        game_id: e.game_id,
+      });
+    }
+  }
 
-  // trie récent -> ancien, limite
-  items.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
-  const sliced = items.slice(0, MAX_ITEMS);
+  // Dédoublonnage par date (premier gagne)
+  const seen = new Set();
+  const unique = entries.filter(e => {
+    if (!e.date) return false;
+    if (seen.has(e.date)) return false;
+    seen.add(e.date);
+    return true;
+  });
 
-  const lastBuild = new Date().toUTCString();
+  // Tri du plus récent au plus ancien
+  unique.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
 
-  const channelTitle = "Giveaway Linux — 1 logiciel + 1 jeu gratuits (liens officiels)";
-  const channelDesc =
-    "Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux. Liens officiels uniquement. Aucun tracking.";
+  const items = unique.slice(0, 30).map((e) => {
+    const s = software.find(x => x.id === e.software_id);
+    const g = games.find(x => x.id === e.game_id);
+
+    const sName = s?.name || "Logiciel";
+    const gName = g?.name || "Jeu";
+    const sUrl = pickBestUrl(s);
+    const gUrl = pickBestUrl(g);
+
+    const title = `(${e.date}) ${sName} + ${gName}`;
+    const link = `${SITE}/`; // page principale (simple)
+    const guid = `giveawaylinux:${e.date}:${e.software_id}:${e.game_id}`;
+    const pubDate = isoToRfc2822(e.date);
+
+    const desc = `
+      <p><b>🧩 Logiciel :</b> ${escXml(sName)} ${sUrl ? `— <a href="${escXml(sUrl)}" target="_blank" rel="noopener">Lien officiel</a>` : ""}</p>
+      <p><b>🎮 Jeu :</b> ${escXml(gName)} ${gUrl ? `— <a href="${escXml(gUrl)}" target="_blank" rel="noopener">Lien officiel</a>` : ""}</p>
+      <p><i>Rappel :</i> liens officiels uniquement • aucun tracking.</p>
+    `;
+
+    return itemBlock({ title, link, guid, pubDate, description: desc });
+  });
+
+  const now = new Date().toUTCString();
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"
-  xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${xmlEscape(channelTitle)}</title>
-    <link>${xmlEscape(SITE)}</link>
-    <atom:link href="${xmlEscape(FEED_URL)}" rel="self" type="application/rss+xml" />
-    <description>${xmlEscape(channelDesc)}</description>
+    <title>Giveaway Linux</title>
+    <link>${SITE}/</link>
+    <description>Chaque jour : 1 logiciel + 1 jeu gratuits pour Linux (liens officiels uniquement). Archives & favoris locaux. Sans tracking.</description>
     <language>fr</language>
-    <lastBuildDate>${xmlEscape(lastBuild)}</lastBuildDate>
-
-${sliced.map(buildItem).join("\n\n")}
+    <lastBuildDate>${escXml(now)}</lastBuildDate>
+    <atom:link href="${SITE}/rss.xml" rel="self" type="application/rss+xml" />
+    ${items.join("\n")}
   </channel>
 </rss>
 `;
 
-  fs.writeFileSync(OUT_PATH, rss, "utf8");
-  console.log(`✅ rss.xml généré (${sliced.length} items)`);
+  fs.writeFileSync(OUT, rss, "utf8");
+  console.log("✅ RSS généré :", OUT);
 }
 
 main();
