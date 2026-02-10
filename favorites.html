@@ -3,129 +3,144 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Giveaway Linux — Favoris</title>
-  <meta name="description" content="Tes favoris Giveaway Linux (stockés localement, sans compte)." />
-  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./css/style.css">
+  <meta name="theme-color" content="#0b1020" />
+
+  <title>Favoris — Giveaway Linux</title>
+  <meta name="description" content="Tes favoris Giveaway Linux stockés localement (sans compte). Aucun tracking." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/favorites.html" />
+
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
+
 <body>
   <div class="wrap">
     <header class="topbar">
       <div class="brand">
-        <img src="./assets/logo.svg" alt="Logo Giveaway Linux">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="36" height="36" />
         <div>
-          <h1>⭐ Mes favoris</h1>
-          <p>Stockés sur ton navigateur (localStorage) • aucun compte</p>
+          <h1>Giveaway Linux</h1>
+          <p>⭐ Favoris — localStorage</p>
         </div>
       </div>
+
       <nav class="nav">
-        <a class="tab" href="./index.html">Accueil</a>
-        <a class="tab" href="./archive.html">Archives</a>
-        <a class="tab active" href="./favorites.html">Favoris</a>
-        <a class="tab" href="./submit.html">Proposer</a>
-        <a class="tab" href="./about.html">À propos</a>
-        <a class="tab" href="./rss.xml">RSS</a>
+        <a class="tab" href="./index.html">🏠 Accueil</a>
+        <a class="tab" href="./discover.html">🎲 Découvrir</a>
+        <a class="tab" href="./archive.html">🗓 Archives</a>
+        <a class="tab active" href="./favorites.html" aria-current="page">⭐ Favoris</a>
+        <a class="tab" href="./rss.xml">📡 RSS</a>
       </nav>
     </header>
 
     <section class="section">
       <div class="head">
         <h2>⭐ Tes favoris</h2>
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
-          <a class="btn" href="./index.html">← Retour</a>
-          <button class="btn" id="clearFavs" type="button">🧹 Vider</button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button id="clear" class="btn">🧹 Tout supprimer</button>
         </div>
       </div>
       <div class="body">
-        <div class="note">
-          Les favoris restent sur ce navigateur même si tu reviens plus tard.
-        </div>
-
-        <div style="height:12px"></div>
-        <div id="favList"></div>
+        <div id="out" class="note">Chargement…</div>
       </div>
     </section>
 
-    <div class="footer">© 2026 — Giveaway Linux</div>
+    <footer class="footer">Aucun tracking • © 2026 Giveaway Linux</footer>
   </div>
 
-  <script type="module">
-    import { loadFavs, clearFavs } from "./js/favs.js";
+  <script>
+    const BASE = new URL("./", location.href);
+    const KEY = "gl_favorites_v1";
+    const esc = s => String(s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
 
-    const $ = (s) => document.querySelector(s);
-
-    async function loadJSON(path){
-      const res = await fetch(path, { cache: "no-store" });
-      if(!res.ok) throw new Error("Erreur chargement " + path);
-      return res.json();
+    async function loadJSON(p){
+      const r = await fetch(new URL(p, BASE), {cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP " + r.status + " : " + p);
+      return r.json();
     }
 
-    function linkHTML(label, url){
-      if(!url) return "";
-      return `<a class="link" href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+    function getFavs(){
+      try { return JSON.parse(localStorage.getItem(KEY) || "[]"); }
+      catch { return []; }
+    }
+    function setFavs(arr){
+      localStorage.setItem(KEY, JSON.stringify(arr));
     }
 
-    function cardHTML(item, typeLabel){
-      const title = item.title || item.name || "—";
-      const desc = item.shortDesc || item.desc || "";
-      const L = item.links || {};
+    function row(item){
       return `
-        <article class="card">
+        <div class="card">
           <div class="inner">
-            <div class="muted"><b>${typeLabel}</b></div>
-            <h3 style="margin:6px 0 8px">${title}</h3>
-            <div class="muted">${desc}</div>
-            <div class="links" style="margin-top:10px">
-              ${linkHTML("Télécharger", L.download)}
-              ${linkHTML("Site officiel", L.official)}
-              ${linkHTML("Flathub", L.flathub)}
-              ${linkHTML("Steam", L.steam)}
-              ${linkHTML("itch.io", L.itch)}
+            <div class="muted"><b>${esc(item.kind)}</b></div>
+            <h3>${esc(item.name)}</h3>
+            <div class="tags"><span class="tag">${esc(item.meta || "")}</span></div>
+            <div class="links">
+              <a class="btn primary" target="_blank" rel="noopener" href="${esc(item.url)}">⬇ Ouvrir</a>
+              <button class="btn" data-del="${esc(item.id)}">🗑 Retirer</button>
             </div>
           </div>
-        </article>
-      `;
-    }
-
-    function renderFavs(catalog){
-      const box = $("#favList");
-      const ids = loadFavs();
-
-      if(ids.length === 0){
-        box.innerHTML = `<div class="note">Aucun favori pour l’instant. Va sur l’accueil et clique sur ⭐.</div>`;
-        return;
-      }
-
-      const map = new Map();
-      (catalog.apps||[]).forEach(a => map.set(a.id, { ...a, _type:"🧩 Logiciel" }));
-      (catalog.games||[]).forEach(g => map.set(g.id, { ...g, _type:"🎮 Jeu" }));
-
-      const items = ids.map(id => map.get(id)).filter(Boolean);
-
-      if(items.length === 0){
-        box.innerHTML = `<div class="note">Tes favoris ne sont plus dans le catalogue (ids modifiés).</div>`;
-        return;
-      }
-
-      box.innerHTML = `
-        <div class="grid2">
-          ${items.map(it => cardHTML(it, it._type)).join("")}
         </div>
-        <div style="height:10px"></div>
-        <div class="muted">Astuce : clique sur ⭐ dans les résultats de recherche ou sur l’accueil pour ajouter/retirer.</div>
       `;
     }
 
-    (async ()=>{
-      const catalog = await loadJSON("./data/catalog.json");
-      renderFavs(catalog);
+    async function render(){
+      const out = document.getElementById("out");
+      const favIds = getFavs();
 
-      $("#clearFavs").addEventListener("click", ()=>{
-        clearFavs();
-        renderFavs(catalog);
-      });
-    })();
+      if(favIds.length === 0){
+        out.className = "note";
+        out.textContent = "Aucun favori pour l’instant. Ajoute-en depuis Découvrir.";
+        return;
+      }
+
+      try{
+        const [soft, games] = await Promise.all([
+          loadJSON("data/software.json"),
+          loadJSON("data/games.json")
+        ]);
+
+        const list = [];
+        favIds.forEach(id => {
+          // id format: "software:xxx" or "game:xxx" (comme discover.html)
+          const [kind, raw] = String(id).split(":");
+          if(kind === "software"){
+            const s = soft.find(x => x.id === raw);
+            if(s) list.push({id, kind:"🧩 Logiciel", name:s.name, meta:s.category, url:(s.url||s.download_url||s.home_url)});
+          }else if(kind === "game"){
+            const g = games.find(x => x.id === raw);
+            if(g) list.push({id, kind:"🎮 Jeu", name:g.name, meta:g.genre, url:(g.url||g.download_url||g.home_url)});
+          }
+        });
+
+        if(list.length === 0){
+          out.className = "note";
+          out.textContent = "Favoris vides ou anciens IDs non trouvés. Re-fais des favoris depuis Découvrir.";
+          return;
+        }
+
+        out.className = "";
+        out.innerHTML = list.map(row).join('<div style="height:12px"></div>');
+
+        out.querySelectorAll("[data-del]").forEach(b=>{
+          b.addEventListener("click", ()=>{
+            const id = b.getAttribute("data-del");
+            setFavs(getFavs().filter(x => x !== id));
+            render();
+          });
+        });
+      }catch(err){
+        out.className = "danger";
+        out.textContent = "Erreur : " + (err.message || err);
+      }
+    }
+
+    document.getElementById("clear").addEventListener("click", ()=>{
+      setFavs([]);
+      render();
+    });
+
+    render();
   </script>
-  <a class="tab" href="./discover.html">Découvrir</a>
 </body>
 </html>
