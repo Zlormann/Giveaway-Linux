@@ -3,134 +3,420 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-  <title>Découvrir — Giveaway Linux</title>
-  <meta name="description" content="Découvre automatiquement un logiciel et un jeu gratuits pour Linux (liens officiels). Une sélection aléatoire basée sur l’historique récent." />
-
-  <!-- ✅ Discover = pas indexé (page aléatoire) -->
-  <meta name="robots" content="noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#0b1020" />
 
-  <!-- Canonical : on pointe vers l'accueil -->
-  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/" />
+  <title>Découvrir au hasard — Giveaway Linux</title>
+  <meta name="description" content="Découvrez au hasard un logiciel ou un jeu gratuit pour Linux. Sélection aléatoire, liens officiels uniquement, sans tracking." />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+
+  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/discover.html" />
 
   <!-- Open Graph -->
   <meta property="og:site_name" content="Giveaway Linux" />
-  <meta property="og:locale" content="fr_FR" />
-  <meta property="og:title" content="Découvrir — Giveaway Linux" />
-  <meta property="og:description" content="Découvre une sélection aléatoire (logiciel + jeu) : liens officiels uniquement." />
   <meta property="og:type" content="website" />
+  <meta property="og:title" content="Découvrir au hasard — Giveaway Linux" />
+  <meta property="og:description" content="Un logiciel ou un jeu Linux gratuit choisi au hasard. Liens officiels uniquement." />
   <meta property="og:url" content="https://zlormann.github.io/Giveaway-Linux/discover.html" />
-  <meta property="og:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
+  <meta property="og:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.png" />
 
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Découvrir — Giveaway Linux" />
-  <meta name="twitter:description" content="Une sélection aléatoire (logiciel + jeu) — liens officiels." />
-  <meta name="twitter:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Découvrir au hasard — Giveaway Linux" />
+  <meta name="twitter:description" content="Un logiciel ou un jeu Linux gratuit choisi au hasard." />
+  <meta name="twitter:image" content="https://zlormann.github.io/Giveaway-Linux/assets/logo.png" />
 
-  <!-- RSS autodécouverte -->
-  <link rel="alternate" type="application/rss+xml" title="Giveaway Linux — RSS" href="./rss.xml" />
-
-  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="./css/style.css" />
-
-  <!-- Sécurité (statique) -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta http-equiv="Referrer-Policy" content="no-referrer" />
-
-  <!-- JSON-LD WebPage -->
+  <!-- JSON-LD -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
     "@type":"WebPage",
-    "name":"Découvrir — Giveaway Linux",
+    "name":"Découvrir au hasard",
     "url":"https://zlormann.github.io/Giveaway-Linux/discover.html",
-    "isPartOf":{
-      "@type":"WebSite",
-      "name":"Giveaway Linux",
-      "url":"https://zlormann.github.io/Giveaway-Linux/"
-    },
-    "inLanguage":"fr-FR",
-    "description":"Page de découverte aléatoire (logiciel + jeu) basée sur l’historique."
+    "description":"Page de découverte aléatoire (logiciels et jeux gratuits pour Linux).",
+    "isPartOf":{"@type":"WebSite","name":"Giveaway Linux","url":"https://zlormann.github.io/Giveaway-Linux/"},
+    "inLanguage":"fr"
   }
   </script>
+
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body>
   <div class="wrap">
-    <header class="topbar" role="banner">
+    <header class="topbar">
       <div class="brand">
-        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="34" height="34" loading="eager">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="34" height="34" />
         <div>
-          <h1 style="margin:0;font-size:14px;">Giveaway Linux</h1>
-          <p style="margin:0;font-size:12px;color:var(--muted);">Découverte aléatoire • liens officiels</p>
+          <h1>Découvrir</h1>
+          <p>🎲 Aléatoire • 🎯 Thématique • 📅 Par date</p>
         </div>
       </div>
 
-      <nav class="nav" aria-label="Navigation principale">
+      <nav class="nav">
         <a class="tab" href="./index.html">🏠 Accueil</a>
-        <a class="tab" href="./archive.html">🗓️ Archives</a>
+        <a class="tab active" href="./discover.html" aria-current="page">🎲 Découvrir</a>
+        <a class="tab" href="./archive.html">🗓 Archives</a>
         <a class="tab" href="./favorites.html">⭐ Favoris</a>
-        <a class="tab" href="./submit.html">➕ Proposer</a>
-        <a class="tab" href="./about.html">ℹ️ À propos</a>
         <a class="tab" href="./rss.xml">📡 RSS</a>
       </nav>
     </header>
 
-    <main role="main">
-      <section class="section">
-        <div class="head">
-          <h2>🎲 Découvrir</h2>
-          <div class="muted" id="discoverMeta">Sélection au hasard</div>
+    <section class="section">
+      <div class="head">
+        <h2>🎁 Découverte</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button id="reroll" class="btn">🔄 Relancer</button>
+          <button id="clearSeen" class="btn">🧹 Reset “déjà vus”</button>
         </div>
-        <div class="body">
-          <div id="discoverError"></div>
+      </div>
 
-          <div class="note">
-            Cette page te propose une sélection aléatoire issue des derniers jours (ou du catalogue si besoin).
-            <b>Liens officiels uniquement.</b>
-          </div>
-
-          <div style="height:14px"></div>
-
-          <div class="grid2">
-            <article class="card">
-              <div class="inner">
-                <div class="muted"><b>🧩 Logiciel</b></div>
-                <h3 id="dAppTitle">—</h3>
-                <div id="dAppDesc" class="muted">—</div>
-                <div style="height:10px"></div>
-                <div id="dAppTags" class="tags"></div>
-                <div id="dAppLinks" class="links"></div>
+      <div class="body">
+        <!-- Contrôles -->
+        <div class="card">
+          <div class="inner">
+            <div class="grid2" style="gap:12px;">
+              <div>
+                <div class="muted">Mode</div>
+                <select id="mode" class="input">
+                  <option value="random">🎲 Aléatoire</option>
+                  <option value="date">📅 Par date (catalog)</option>
+                </select>
               </div>
-            </article>
 
-            <article class="card">
-              <div class="inner">
-                <div class="muted"><b>🎮 Jeu</b></div>
-                <h3 id="dGameTitle">—</h3>
-                <div id="dGameDesc" class="muted">—</div>
-                <div style="height:10px"></div>
-                <div id="dGameTags" class="tags"></div>
-                <div id="dGameLinks" class="links"></div>
+              <div>
+                <div class="muted">Type</div>
+                <select id="type" class="input">
+                  <option value="all">Tout (logiciel ou jeu)</option>
+                  <option value="software">Logiciel</option>
+                  <option value="game">Jeu</option>
+                </select>
               </div>
-            </article>
-          </div>
 
-          <div style="height:14px"></div>
+              <div>
+                <div class="muted">Catégorie / Genre (thème)</div>
+                <select id="tag" class="input">
+                  <option value="">Tout</option>
+                </select>
+              </div>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn primary" id="reroll" type="button">🔄 Relancer</button>
-            <a class="btn" href="./archive.html">Voir les archives</a>
+              <div>
+                <div class="muted">Date (YYYY-MM-DD)</div>
+                <input id="date" class="input" placeholder="2026-02-07" />
+              </div>
+            </div>
+
+            <div style="height:10px"></div>
+            <div class="note" id="hint">
+              Astuce : tu peux aussi utiliser l’URL, ex :
+              <br><span class="muted">discover.html?type=software&tag=Graphics</span>
+              <br><span class="muted">discover.html?mode=date&date=2026-02-07</span>
+            </div>
           </div>
         </div>
-      </section>
 
-      <div class="footer">✓ Aucun tracking • ✓ Favoris locaux • © 2026 Giveaway Linux</div>
-    </main>
+        <div style="height:12px"></div>
+
+        <div id="result" class="note">Chargement…</div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      ✓ Aucun tracking • Favoris locaux • © 2026 Giveaway Linux
+    </footer>
   </div>
 
-  <script src="./js/discover.js"></script>
+  <script>
+    // ---------- Config ----------
+    const BASE = new URL("./", location.href);
+    const FAV_KEY  = "gl_favorites_v1";
+    const SEEN_KEY = "gl_seen_v1"; // anti-doublon “déjà vus”
+
+    const $ = (s) => document.querySelector(s);
+
+    const esc = s => String(s ?? "")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;")
+      .replaceAll(">","&gt;").replaceAll('"',"&quot;");
+
+    function pickUrl(o){
+      return o?.url || o?.home_url || o?.download_url || "#";
+    }
+
+    async function loadJSON(p){
+      const r = await fetch(new URL(p, BASE), { cache:"no-store" });
+      if(!r.ok) throw new Error("HTTP " + r.status + " sur " + p);
+      return r.json();
+    }
+
+    function getFavs(){
+      try { return JSON.parse(localStorage.getItem(FAV_KEY) || "[]"); }
+      catch { return []; }
+    }
+    function toggleFav(id){
+      const f = getFavs();
+      const i = f.indexOf(id);
+      if(i >= 0) f.splice(i,1); else f.unshift(id);
+      localStorage.setItem(FAV_KEY, JSON.stringify(f.slice(0,200)));
+    }
+
+    function getSeen(){
+      try { return JSON.parse(localStorage.getItem(SEEN_KEY) || "[]"); }
+      catch { return []; }
+    }
+    function addSeen(id){
+      const seen = getSeen();
+      // garde max 800 pour rester léger
+      const next = [id, ...seen.filter(x => x !== id)].slice(0, 800);
+      localStorage.setItem(SEEN_KEY, JSON.stringify(next));
+    }
+    function clearSeen(){
+      localStorage.removeItem(SEEN_KEY);
+    }
+
+    function randomFrom(arr){
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // Anti-doublon intelligent : essaye N fois avant d’accepter un déjà-vu
+    function smartPick(arr, idFn, maxTries = 25){
+      const seen = new Set(getSeen());
+      if(arr.length === 0) return null;
+
+      for(let i=0;i<maxTries;i++){
+        const it = randomFrom(arr);
+        const id = idFn(it);
+        if(!seen.has(id)) return it;
+      }
+      // si tout est “vu” ou trop de répétitions -> on accepte un au hasard
+      return randomFrom(arr);
+    }
+
+    function uniqSorted(arr){
+      return Array.from(new Set(arr.filter(Boolean))).sort((a,b)=> String(a).localeCompare(String(b)));
+    }
+
+    // Remplit la liste “tag” depuis software.json + games.json
+    function fillTags(soft, games){
+      const tags = [];
+      (soft || []).forEach(s => tags.push(s.category));
+      (games || []).forEach(g => tags.push(g.genre));
+      const list = uniqSorted(tags);
+
+      const sel = $("#tag");
+      sel.innerHTML = `<option value="">Tout</option>` + list.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("");
+    }
+
+    // Lit les paramètres URL et les applique
+    function applyQueryToUI(){
+      const q = new URLSearchParams(location.search);
+
+      const mode = q.get("mode");
+      const type = q.get("type");
+      const tag  = q.get("tag");
+      const date = q.get("date");
+
+      if(mode && ["random","date"].includes(mode)) $("#mode").value = mode;
+      if(type && ["all","software","game"].includes(type)) $("#type").value = type;
+      if(tag !== null) $("#tag").value = tag;
+      if(date) $("#date").value = date;
+    }
+
+    // Met à jour l’URL (SEO/partage) sans recharger
+    function syncURL(){
+      const q = new URLSearchParams();
+      const mode = $("#mode").value;
+      const type = $("#type").value;
+      const tag  = $("#tag").value.trim();
+      const date = $("#date").value.trim();
+
+      if(mode !== "random") q.set("mode", mode);
+      if(type !== "all") q.set("type", type);
+      if(tag) q.set("tag", tag);
+      if(mode === "date" && date) q.set("date", date);
+
+      const newUrl = location.pathname + (q.toString() ? ("?" + q.toString()) : "");
+      history.replaceState(null, "", newUrl);
+    }
+
+    function renderSingleCard(item, kind){
+      const typeLabel = kind === "software" ? "🧩 Logiciel" : "🎮 Jeu";
+      const meta = item.category || item.genre || "—";
+      const url  = pickUrl(item);
+      const id   = item.id || (kind + ":" + item.name);
+      const fav  = getFavs().includes(id);
+
+      return `
+        <div class="card">
+          <div class="inner">
+            <div class="muted">${typeLabel}</div>
+            <h3>${esc(item.name)}</h3>
+            <div class="tags"><span class="tag">${esc(meta)}</span></div>
+
+            <div class="links" style="margin-top:12px">
+              <a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener">⬇ Télécharger</a>
+              <button class="btn" data-fav="${esc(id)}">${fav ? "⭐ Retirer" : "☆ Favori"}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function bindFavButtons(){
+      document.querySelectorAll("[data-fav]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          toggleFav(btn.getAttribute("data-fav"));
+          draw(); // refresh UI
+        });
+      });
+    }
+
+    // Mode date: charge data/catalog.json (si existe)
+    async function drawByDate(soft, games){
+      const box = $("#result");
+      const date = $("#date").value.trim();
+
+      box.className = "note";
+      box.textContent = "Chargement du catalogue…";
+
+      try{
+        const catalog = await loadJSON("data/catalog.json"); // liste d'entrées jour
+        if(!Array.isArray(catalog) || catalog.length === 0){
+          box.className = "note";
+          box.textContent = "catalog.json est vide. Ajoute l’historique (30 jours) pour activer le mode date.";
+          return;
+        }
+        if(!date){
+          box.className = "note";
+          box.textContent = "Entre une date (ex: 2026-02-07) ou mets ?mode=date&date=YYYY-MM-DD";
+          return;
+        }
+
+        const entry = catalog.find(e => e && e.date === date);
+        if(!entry){
+          box.className = "note";
+          box.textContent = "Aucune entrée trouvée pour cette date dans catalog.json.";
+          return;
+        }
+
+        const app = (soft || []).find(s => s.id === entry.software_id) || null;
+        const game = (games || []).find(g => g.id === entry.game_id) || null;
+
+        box.className = "";
+        box.innerHTML = `
+          <div class="success">📅 Sélection du <b>${esc(date)}</b> (depuis <code>data/catalog.json</code>)</div>
+          <div style="height:12px"></div>
+          <div class="grid2">
+            ${app ? renderSingleCard(app, "software") : `<div class="danger">Logiciel introuvable (ID: ${esc(entry.software_id)})</div>`}
+            ${game ? renderSingleCard(game, "game") : `<div class="danger">Jeu introuvable (ID: ${esc(entry.game_id)})</div>`}
+          </div>
+        `;
+
+        // on marque comme “vu”
+        if(app) addSeen("software:" + (app.id || app.name));
+        if(game) addSeen("game:" + (game.id || game.name));
+
+        bindFavButtons();
+      }catch(err){
+        box.className = "danger";
+        box.textContent = "Impossible de charger data/catalog.json (mode date).";
+      }
+    }
+
+    async function drawRandom(soft, games){
+      const box = $("#result");
+      const type = $("#type").value; // all / software / game
+      const tag  = $("#tag").value.trim(); // category/genre
+
+      let pool = [];
+      let kind = "software";
+
+      if(type === "software"){
+        pool = (soft || []).filter(s => !tag || String(s.category||"") === tag);
+        kind = "software";
+      } else if(type === "game"){
+        pool = (games || []).filter(g => !tag || String(g.genre||"") === tag);
+        kind = "game";
+      } else {
+        // all
+        const softPool = (soft || []).filter(s => !tag || String(s.category||"") === tag).map(x => ({...x, __kind:"software"}));
+        const gamePool = (games || []).filter(g => !tag || String(g.genre||"") === tag).map(x => ({...x, __kind:"game"}));
+        pool = [...softPool, ...gamePool];
+      }
+
+      if(pool.length === 0){
+        box.className = "note";
+        box.textContent = "Aucun résultat avec ce filtre. Mets 'Tout' ou enlève le thème.";
+        return;
+      }
+
+      // smart pick anti-doublon
+      const it = smartPick(pool, (x) => {
+        const k = x.__kind || (x.genre ? "game" : "software");
+        return k + ":" + (x.id || x.name);
+      });
+
+      const realKind = it.__kind || (it.genre ? "game" : "software");
+      const id = realKind + ":" + (it.id || it.name);
+
+      box.className = "";
+      box.innerHTML = `
+        <div class="success">🎲 Tirage aléatoire ${tag ? `— Thème : <b>${esc(tag)}</b>` : ""}</div>
+        <div style="height:12px"></div>
+        ${renderSingleCard(it, realKind)}
+      `;
+
+      addSeen(id);
+      bindFavButtons();
+    }
+
+    async function draw(){
+      const box = $("#result");
+      box.className = "note";
+      box.textContent = "Chargement…";
+
+      syncURL();
+
+      try{
+        const [soft, games] = await Promise.all([
+          loadJSON("data/software.json"),
+          loadJSON("data/games.json")
+        ]);
+
+        // tags
+        fillTags(soft, games);
+
+        // re-applique tag si venu de l’URL et pas encore présent
+        applyQueryToUI();
+        syncURL();
+
+        const mode = $("#mode").value; // random / date
+        if(mode === "date"){
+          await drawByDate(soft, games);
+        } else {
+          await drawRandom(soft, games);
+        }
+      }catch(err){
+        box.className = "danger";
+        box.textContent = "Erreur : impossible de charger data/software.json ou data/games.json.";
+      }
+    }
+
+    // Events UI
+    $("#reroll").addEventListener("click", draw);
+    $("#clearSeen").addEventListener("click", () => { clearSeen(); draw(); });
+
+    ["mode","type","tag","date"].forEach(id => {
+      $("#" + id).addEventListener("change", draw);
+      $("#" + id).addEventListener("input", () => {
+        if(id === "date") syncURL();
+      });
+    });
+
+    // Boot
+    (function init(){
+      applyQueryToUI();
+      draw();
+    })();
+  </script>
 </body>
 </html>
