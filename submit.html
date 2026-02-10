@@ -1,24 +1,123 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Proposer – Giveaway Linux</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+
+  <title>Proposer — Giveaway Linux</title>
+  <meta name="description" content="Proposer un logiciel ou un jeu gratuit (légal) pour Giveaway Linux. Liens officiels uniquement." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/submit.html" />
+
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
+
 <body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="36" height="36" />
+        <div>
+          <h1>Giveaway Linux</h1>
+          <p>➕ Proposer • communauté</p>
+        </div>
+      </div>
 
-<h1>➕ Proposer un logiciel / jeu</h1>
+      <nav class="nav">
+        <a class="tab" href="./index.html">🏠 Accueil</a>
+        <a class="tab" href="./discover.html">🎲 Découvrir</a>
+        <a class="tab" href="./archive.html">🗓 Archives</a>
+        <a class="tab" href="./favorites.html">⭐ Favoris</a>
+        <a class="tab active" href="./submit.html" aria-current="page">➕ Proposer</a>
+        <a class="tab" href="./rss.xml">📡 RSS</a>
+      </nav>
+    </header>
 
-<p>
-  Envoie ta proposition par email (liens officiels uniquement).
-</p>
+    <section class="section">
+      <div class="head"><h2>➕ Proposer une sélection</h2></div>
+      <div class="body">
+        <div class="note">
+          ⚠️ Liens officiels uniquement (site du projet, Flathub, Steam, itch.io…).
+        </div>
 
-<a href="mailto:giveawaylinux@proton.me?subject=Proposition Giveaway Linux">
-  📧 Envoyer une proposition
-</a>
+        <div style="height:12px"></div>
 
-<br><br>
-<a href="./">← Retour</a>
-  <a class="tab" href="./discover.html">Découvrir</a>
+        <div class="grid2" style="gap:12px;">
+          <div>
+            <div class="muted">Type</div>
+            <select id="type" class="input">
+              <option value="Logiciel">Logiciel</option>
+              <option value="Jeu">Jeu</option>
+            </select>
+          </div>
 
+          <div>
+            <div class="muted">Nom</div>
+            <input id="name" class="input" placeholder="Ex : GIMP / Shotcut / SuperTuxKart…" />
+          </div>
+
+          <div>
+            <div class="muted">Lien officiel</div>
+            <input id="url" class="input" placeholder="https://…" />
+          </div>
+
+          <div>
+            <div class="muted">Pourquoi ?</div>
+            <input id="why" class="input" placeholder="Une phrase simple" />
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="links">
+          <button class="btn primary" id="copy">📋 Copier</button>
+          <a class="btn" id="mail" href="#">📩 Envoyer par email</a>
+        </div>
+
+        <div style="height:10px"></div>
+        <div class="muted">Email : <b>npc.ais.pro@gmail.com</b></div>
+      </div>
+    </section>
+
+    <footer class="footer">© 2026 Giveaway Linux</footer>
+  </div>
+
+  <script>
+    const $ = (s)=>document.querySelector(s);
+    function msg(){
+      return [
+        "Giveaway Linux — Proposition",
+        `Type: ${$("#type").value}`,
+        `Nom: ${$("#name").value.trim() || "(manquant)"}`,
+        `Lien officiel: ${$("#url").value.trim() || "(manquant)"}`,
+        `Pourquoi: ${$("#why").value.trim() || "(manquant)"}`,
+        "",
+        "Rappel : liens officiels / légaux uniquement."
+      ].join("\\n");
+    }
+
+    $("#copy").addEventListener("click", async ()=>{
+      const t = msg();
+      try{
+        await navigator.clipboard.writeText(t);
+        alert("Copié !");
+      }catch{
+        const ta = document.createElement("textarea");
+        ta.value = t; document.body.appendChild(ta);
+        ta.select(); document.execCommand("copy");
+        ta.remove();
+        alert("Copié !");
+      }
+    });
+
+    $("#mail").addEventListener("click", (e)=>{
+      e.preventDefault();
+      const subject = encodeURIComponent("Giveaway Linux — Proposition");
+      const body = encodeURIComponent(msg());
+      location.href = `mailto:npc.ais.pro@gmail.com?subject=${subject}&body=${body}`;
+    });
+  </script>
 </body>
 </html>
