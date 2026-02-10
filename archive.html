@@ -1,27 +1,132 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Archives – Giveaway Linux</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+
+  <title>Archives — Giveaway Linux</title>
+  <meta name="description" content="Toutes les anciennes sélections Giveaway Linux (logiciels + jeux gratuits). Historique automatique sur 30 jours." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://zlormann.github.io/Giveaway-Linux/archive.html" />
+
+  <link rel="alternate" type="application/rss+xml" title="Giveaway Linux — RSS" href="./rss.xml" />
+  <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml" href="https://zlormann.github.io/Giveaway-Linux/rss.xml" />
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Archives",
+    "url":"https://zlormann.github.io/Giveaway-Linux/archive.html",
+    "isPartOf":{"@type":"WebSite","name":"Giveaway Linux","url":"https://zlormann.github.io/Giveaway-Linux/"},
+    "inLanguage":"fr"
+  }
+  </script>
+
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
+
 <body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <img src="./assets/logo.svg" alt="Logo Giveaway Linux" width="36" height="36" />
+        <div>
+          <h1>Giveaway Linux</h1>
+          <p>🗓 Archives — historique</p>
+        </div>
+      </div>
 
-<header>
-  <h1>📦 Archives</h1>
-  <a href="./">← Retour accueil</a>
-</header>
+      <nav class="nav">
+        <a class="tab" href="./index.html">🏠 Accueil</a>
+        <a class="tab" href="./discover.html">🎲 Découvrir</a>
+        <a class="tab active" href="./archive.html" aria-current="page">🗓 Archives</a>
+        <a class="tab" href="./favorites.html">⭐ Favoris</a>
+        <a class="tab" href="./rss.xml">📡 RSS</a>
+      </nav>
+    </header>
 
-<main id="archive">
-  Chargement des archives…
-</main>
+    <section class="section">
+      <div class="head">
+        <h2>🗓 Les 30 derniers jours</h2>
+        <div class="muted">Source : <code>data/catalog.json</code></div>
+      </div>
+      <div class="body">
+        <div id="out" class="note">Chargement…</div>
+      </div>
+    </section>
 
-<footer>
-  ✔ Projet communautaire • Aucun tracking • © 2026 Giveaway Linux
-</footer>
+    <footer class="footer">© 2026 Giveaway Linux</footer>
+  </div>
 
-<script src="js/archive.js"></script>
-  <a class="tab" href="./discover.html">Découvrir</a>
+  <script>
+    const BASE = new URL("./", location.href);
+    const esc = s => String(s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+
+    async function loadJSON(p){
+      const r = await fetch(new URL(p, BASE), {cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP " + r.status + " : " + p);
+      return r.json();
+    }
+
+    function card(date, s, g){
+      return `
+        <div class="card">
+          <div class="inner">
+            <div class="muted"><b>${esc(date)}</b></div>
+            <div class="hr"></div>
+
+            <div><b>🧩 ${esc(s?.name || "Logiciel introuvable")}</b> <span class="muted">• ${esc(s?.category || "")}</span></div>
+            <div class="links">
+              ${s?.url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(s.url)}">Télécharger logiciel</a>` : ""}
+              ${s?.home_url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(s.home_url)}">Site officiel</a>` : ""}
+            </div>
+
+            <div style="height:10px"></div>
+
+            <div><b>🎮 ${esc(g?.name || "Jeu introuvable")}</b> <span class="muted">• ${esc(g?.genre || "")}</span></div>
+            <div class="links">
+              ${g?.url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(g.url)}">Télécharger jeu</a>` : ""}
+              ${g?.home_url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(g.home_url)}">Site officiel</a>` : ""}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    (async ()=>{
+      const out = document.getElementById("out");
+      try{
+        const [catalog, software, games] = await Promise.all([
+          loadJSON("data/catalog.json"),
+          loadJSON("data/software.json"),
+          loadJSON("data/games.json")
+        ]);
+
+        if(!Array.isArray(catalog) || catalog.length === 0){
+          out.className = "note";
+          out.textContent = "Aucune archive : ajoute data/catalog.json (historique 30 jours).";
+          return;
+        }
+
+        const html = catalog
+          .slice(0, 30)
+          .map(e => {
+            const s = software.find(x => x.id === e.software_id) || null;
+            const g = games.find(x => x.id === e.game_id) || null;
+            return card(e.date, s, g);
+          })
+          .join('<div style="height:12px"></div>');
+
+        out.className = "";
+        out.innerHTML = html;
+      }catch(err){
+        out.className = "danger";
+        out.textContent = "Erreur : " + (err.message || err);
+      }
+    })();
+  </script>
 </body>
 </html>
